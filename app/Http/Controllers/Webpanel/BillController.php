@@ -150,5 +150,51 @@ class BillController extends Controller
     public function getdata(Request $request,$id){
         return $data = type::find($id);
     }
-
+    public function report(request $request){
+        return view("$this->prefix.pages.$this->folder.index",[
+            'js' => [
+                ["type"=>"text/javascript","src"=>"backend/build/backend/bill.js"],
+                ["src"=>'backend/js/sweetalert2.all.min.js'],
+                ["src"=>'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js'],
+                ["src"=>'backend/js/js/charts.js'],
+            ],
+            'prefix' => $this->prefix,
+            'folder' => $this->folder,
+            'segment' => $this->segment,
+            'page' => 'report',
+            'rows' => Bill::orderby('id','asc')->get(),
+        ]);
+    }
+    public function get_report(request $request,$id){
+        $type = $id;
+        if($type == "1"){
+            $date = date("d");
+            $result = Bill::whereDay("created",$date)->get();
+        }
+        else if($type == "2"){
+            $date = date("m");
+            $date = 10;
+            $result = Bill::whereMonth("created",$date)->get();
+        }
+        else if($type == "3"){
+            $date = date("y");
+            $result = Bill::whereYear("created",$date)->get();
+        }
+        $pay = 0;
+        $income =0;
+        foreach($result as $row){
+            $data1 = BillDetail::leftjoin("type","bill_detail.type_id","type.id")->where("bill_id",$row->id)->get();
+            foreach($data1 as $row){
+                if($row->bill_type == "pay"){
+                    $pay +=  ($row->cost * $row->amount);
+                }else{
+                    $income +=  ($row->cost * $row->amount);
+                }
+            }
+        }
+        $data = array();
+        array_push($data ,$income ,$pay);
+        // dd($data);
+        return $data;
+    }
 }

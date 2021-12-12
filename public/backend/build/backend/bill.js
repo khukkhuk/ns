@@ -5,6 +5,7 @@ var oTable;
 var segment = $('#segment').val();
 var folder = $('#folder').val();
 $(function () {
+    chart(1)
     oTable = $('#data-table').DataTable({
         "sDom": "<'row'<'col-sm-12'tr>><'row'<'col-sm-5'i><'col-sm-'p>>",
         processing: true,
@@ -140,6 +141,55 @@ $(document).on('change','.selecttype',function(){
         }
     });
 });
+
+$('.myLike').click(function(){
+    chart($(this).val())
+})
+function chart(type){
+
+    $.ajax({ type: 'get',
+        url: "webpanel/bill/get_report/"+type,
+        success: function (res){
+            income = res.income
+            expenses = res.pay   
+            console.log(res)
+            get_chart(income , pay,type)
+        }
+    });
+}
+function get_chart(income , pay ,type){
+    total = income - pay
+    var xValues = ["รายรับ", "รายจ่าย", "คงเหลือ"];
+    var yValues = [ income,pay,total];
+    var barColors = ["green", "red","orange"];
+
+    if(type == 1){
+        title = "รายรับ-จ่าย รายวัน";
+    } if (type == 2){
+        title = "รายรับ-จ่าย รายเดือน";
+    }
+    if (type == 3){
+        title = "รายรับ-จ่าย รายปี";
+    }
+    new Chart("myChart", {
+        type: "bar",
+        data: {
+            labels: xValues,
+            datasets: [{
+            backgroundColor: barColors,
+            data: yValues
+            }]
+        },
+        options: {
+            legend: {display: false},
+            title: {
+            display: true,
+              text: title
+            }
+        }
+    });
+}
+
 
 $(document).on('keyup', '.amount', function(){
     sort = $(this).attr("id").substr(6,10);

@@ -227,6 +227,8 @@ Route::group(['middleware' => ['Webpanel']], function () {
         Route::prefix('bill')->group(function(){
             Route::get('/', [Webpanel\BillController::class,'index']);
             Route::get('/add', [Webpanel\BillController::class,'add']);
+            Route::get('/report', [Webpanel\BillController::class,'report']);
+            Route::get('/get_report/{id}', [Webpanel\BillController::class,'get_report']);
             Route::post('/add', [Webpanel\BillController::class,'insert_bill']);
             Route::get('/getdata/{id}', [Webpanel\BillController::class,'getdata']);
             Route::post('/datatable', [Webpanel\BillController::class,'datatable']);

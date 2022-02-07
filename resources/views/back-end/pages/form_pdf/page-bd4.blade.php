@@ -28,7 +28,7 @@
                                         </div> 
                                         <hr>   -->
 <div class="row">
-    <div class="col-12">
+    <div class="col-md-8">
         <div class="card">
             <div class="card-body">
                 <div class="row">
@@ -123,7 +123,7 @@
                 
                 
 <div class="row">
-    <div class="col-12">
+    <div class="col-md-8">
         <div class="card">
             <div class="card-body">
                 <div class="row">
@@ -208,7 +208,7 @@
                 
                 
 <div class="row">
-    <div class="col-12">
+    <div class="col-md-8">
         <div class="card">
             <div class="card-body">
                 <div class="row">
@@ -238,7 +238,7 @@
 </div>  
 
 <div class="row">
-    <div class="col-12">
+    <div class="col-md-8">
         <div class="card">
             <div class="card-body">
                 <div class="row">
@@ -249,7 +249,7 @@
                                     <div class="col-md-12">
                                         <div class="row">
                                             <div class="form-group col-md-6">
-                                                <input type="text" hidden name="pages" value="30">
+                                                <input type="text" hidden name="pages" value="33">
                                                 <input type="text" hidden name="title_id" value="{{$title_id}}">
                                                 <input type="text" hidden name="pdf_id" value="@if(isset($pdf)) {{$pdf->id}} @endif">
                                                 <input type="text" hidden name="pdf_type" value="{{$page}}">

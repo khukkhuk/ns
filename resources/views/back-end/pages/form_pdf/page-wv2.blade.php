@@ -3,13 +3,12 @@
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-flex align-items-center justify-content-between">
-                <h4 class="mb-0 font-size-18">เอกสารwv2</h4>
+                <h4 class="mb-0 font-size-18">บต.46</h4>
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="{{ url("$segment") }}">หน้าแรก</a></li>
-                        <li class="breadcrumb-item"><a href="{{ url("$segment/$folder") }}">เอกสารwv2</a></li>
-                        <li class="breadcrumb-item">เอกสารwv2</li>
+                        <li class="breadcrumb-item">บต.46</li>
                     </ol>
                 </div>
 
@@ -28,13 +27,12 @@
                                         </div> 
                                         <hr>   -->
 <div class="row">
-    <div class="col-12">
+    <div class="col-md-8">
         <div class="card">
             <div class="card-body">
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
-                                        <h4>1</h4>
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-12">
@@ -123,13 +121,12 @@
                 
                 
 <div class="row">
-    <div class="col-12">
+    <div class="col-md-8">
         <div class="card">
             <div class="card-body">
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
-                                        <h4>2</h4>
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-12">
@@ -205,16 +202,13 @@
         </div>
     </div>
 </div>
-                
-                
 <div class="row">
-    <div class="col-12">
+    <div class="col-md-8">
         <div class="card">
             <div class="card-body">
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
-                                        <h4>3</h4>
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-12">
@@ -238,7 +232,7 @@
 </div>  
 
 <div class="row">
-    <div class="col-12">
+    <div class="col-md-8">
         <div class="card">
             <div class="card-body">
                 <div class="row">
@@ -249,10 +243,10 @@
                                     <div class="col-md-12">
                                         <div class="row">
                                             <div class="form-group col-md-6">
-                                                <input type="text" hidden name="pages" value="30">
+                                                <input type="text" hidden name="pages" value="33">
                                                 <input type="text" hidden name="title_id" value="{{$title_id}}">
                                                 <input type="text" hidden name="pdf_id" value="@if(isset($pdf)) {{$pdf->id}} @endif">
-                                                <input type="text" hidden name="pdf_type" value="wv2">
+                                                <input type="text" hidden name="pdf_type" value="{{$page}}">
                                                 <button class="btn btn-primary" type="submit" name="signup" value="Create">บันทึกข้อมูล</button>
                                                 <a class="btn btn-danger" href="{{url("$segment/$folder")}}">ยกเลิก</a>
                                             </form>

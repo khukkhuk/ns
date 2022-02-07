@@ -29,75 +29,22 @@ $(function () {
         },
         columns: [
             {data: 'DT_RowIndex',    title :'#',    className: 'text-center w10'}, // 0
-            {data: 'type',    title :'ประเภท',    className: 'text-left w200'}, // 1
-            {data: 'type_name',    title :'รายการ',    className: 'text-center w70'}, // 2
-            {data: 'cost',    title :'ราคา/หน่วย',    className: 'text-center w70', orderable: false, searchable: false}, // 3
-            {data: 'id',    title :'',    className: 'text-center w70', orderable: false, searchable: false}, // 4
+            {data: 'category',    title :'หมวดหมู่',    className: 'text-left w200'}, // 1
+            {data: 'name',    title :'ชื่อรายการ',    className: 'text-center w70'}, // 3
+            {data: 'price',    title :'ราคา/หน่วย',    className: 'text-center w70', orderable: false, searchable: false}, // 4
+            {data: 'type',    title :'ประเภทบิล',    className: 'text-center w70'}, // 2
+            {data: 'id',    title :'',    className: 'text-center w70', orderable: false, searchable: false}, // 5
             
         ],
         rowCallback: function (nRow, aData, dataIndex) {
            
 
-            $('td:eq(1)', nRow).html(''
-            +aData['type']
-            ).addClass('input');
-            
-            $('td:eq(2)', nRow).html(''
-            +aData['type_name']
-            ).addClass('input');
-
-            $('td:eq(3)', nRow).html(''
-            +aData['cost']
-            ).addClass('input');
-
-            $('td:eq(4)', nRow).html(''
+            $('td:eq(5)', nRow).html(''
             +'<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample'+dataIndex+'" aria-expanded="false" aria-controls="collapseExample">ดำเนินการ</button>'
             +'<div class="collapse" id="collapseExample'+dataIndex+'"><a style="width:70%;margin:5px 0px" href="'+fullUrl+'/edit/'+aData['id']+'" disabled class="btn btn-sm btn-success">แก้ไขข้อมูล</a></div>'
-            +'<div class="collapse" id="collapseExample'+dataIndex+'"><a style="width:70%;margin:5px 0px" href="'+fullUrl+'/type_detail/'+aData['id']+'" class="btn btn-sm btn-success">จัดการขั้นตอน</a></div>'
+            +'<div class="collapse" id="collapseExample'+dataIndex+'"><a style="width:70%;margin:5px 0px" href="'+fullUrl+'/del/'+aData['id']+'" disabled class="btn btn-sm btn-success">ลบข้อมูล</a></div>'
             ).addClass('input');
 
-        }
-    });
-    oTable = $('#data-table-type_detail').DataTable({
-        "sDom": "<'row'<'col-sm-12'tr>><'row'<'col-sm-5'i><'col-sm-7'p>>",
-        processing: true,
-        serverSide: true,
-        stateSave: true,
-        scroller: true,
-        scrollCollapse: true,
-        scrollX: true,
-        ordering: true,
-        // scrollY: ''+($(window).height()-370)+'px',
-        iDisplayLength: 25,
-        ajax: {
-            url: fullUrl+"/datatable_type_detail",
-            data:{id:$("#id").val(),
-            },
-            method: 'POST'
-        },
-        columns: [
-            {data: 'DT_RowIndex',    title :'#',    className: 'text-center w10'}, // 0
-            {data: 'name',    title :'รายการ',    className: 'text-left w200'}, // 1
-            {data: 'cost',    title :'ราคา/หน่วย',    className: 'text-center w70', orderable: false, searchable: false}, // 3
-            {data: 'id',    title :'',    className: 'text-center w70'}, // 4
-            
-        ],
-        rowCallback: function (nRow, aData, dataIndex) {
-           
-
-            $('td:eq(1)', nRow).html(''
-            +aData['name']
-            ).addClass('input');
-            
-            $('td:eq(2)', nRow).html(''
-            +aData['cost']
-            ).addClass('input');
-
-            $('td:eq(3)', nRow).html(''
-            +'<div id="'+aData['id']+'" class="btn btn-info edit_detail">แก้ไขข้อมูล</div>'
-            )
-
-            
         }
     });
     $('.myWhere,.myLike,.myCustom,#onlyTrashed').on('change', function(e){
@@ -215,4 +162,3 @@ function destroy(id) {
 function dragsort(id, from, to) {
     $.ajax({ url: fullUrl + '/dragsort', type: 'post', data: { id: id, from: from, to: to, _token: $('input[name="_token"]').val() }, dataType: 'json', success: function (data) {/*if(data==true){ if(confirm('Refresh to change the display effect.')==true){ location.reload();}}*/ } })
 }
-

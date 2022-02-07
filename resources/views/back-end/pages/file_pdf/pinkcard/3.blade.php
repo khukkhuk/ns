@@ -11,68 +11,51 @@
         body {
             font-family: "THSarabunNew";
         }
+        p,img{
+            position:fixed;
+        }
     </style>
 </head>
 <body style="top:0;left:0">
 <div style="page-break-after: always;">
-    <img src="backend/images/work_visa/ตม.7_001.jpg" style="margin:-45px;position:fixed;width:800px" alt="">
-    <p style="position:fixed;color:red;margin:115px 530px">บาท</p>
-    <p style="position:fixed;color:red;margin:175px 410px">วัน</p>
-    <p style="position:fixed;color:red;margin:175px 490px">เดือน</p>
-    <p style="position:fixed;color:red;margin:175px 620px">ปี</p>
-    <p style="position:fixed;color:red;margin:290px 290px">{{$resulte->surname}}</p>    
-    <p style="position:fixed;color:red;margin:290px 530px">{{$resulte->name}}</p>
-    <p style="position:fixed;color:red;margin:340px 120px">บาท</p>
-    <p style="position:fixed;color:red;margin:340px 330px">{{$resulte->age}}</p>
-    <p style="position:fixed;color:red;margin:340px 460px">วันที่</p>
-    <p style="position:fixed;color:red;margin:340px 550px">เดือน</p>
-    <p style="position:fixed;color:red;margin:340px 660px">ปี</p>
-    <!-- <p style="position:fixed;color:red;margin:365px 130px">{{$resulte->b_place}}</p> -->
-    <p style="position:fixed;color:red;margin:385px 130px">{{$resulte->b_place}}</p>
-    <p style="position:fixed;color:red;margin:385px 550px">{{$resulte->passport_country}}</p>
-    <!-- <p style="position:fixed;color:red;margin:410px 140px">เงินเดือน</p> -->
-    <!-- <p style="position:fixed;color:red;margin:410px 580px">คน</p> -->
-    <p style="position:fixed;color:red;margin:430px 350px">{{$resulte->passport_number}}</p>
-    <p style="position:fixed;color:red;margin:430px 0px 0px 610px">{{$resulte->passport_create}}</p>
-    <!-- <p style="position:fixed;color:red;margin:455px 240px">doc</p>
-    <p style="position:fixed;color:red;margin:455px 350px">no</p>
-    <p style="position:fixed;color:red;margin:455px 630px">{{$resulte->passport_place}}</p> -->
-    <p style="position:fixed;color:red;margin:475px 120px">doc</p>
-    <p style="position:fixed;color:red;margin:475px 240px">no</p>
-    <p style="position:fixed;color:red;margin:475px 350px">{{$resulte->passport_place}}</p>
-    <p style="position:fixed;color:red;margin:475px 0px 0px 610px">{{$resulte->passport_expire}}</p>
-    <!-- <p style="position:fixed;color:red;margin:500px 120px">doc</p>
-    <p style="position:fixed;color:red;margin:500px 240px">no</p>
-    <p style="position:fixed;color:red;margin:500px 350px">date</p>
-    <p style="position:fixed;color:red;margin:500px 610px">date</p> -->
-    <p style="position:fixed;color:red;margin:525px 110px">สัญชาติ</p>
-    <p style="position:fixed;color:red;margin:525px 240px">สัญชาติ</p>
-    <p style="position:fixed;color:red;margin:525px 410px">{{$resulte->passport_type}}</p>
-    <p style="position:fixed;color:red;margin:570px 190px">ตำแหน่ง</p>
-    <p style="position:fixed;color:red;margin:570px 410px">ตำแหน่ง</p>
-    <p style="position:fixed;color:red;margin:590px 270px">ตำแหน่ง</p>
-    <p style="position:fixed;color:red;margin:590px 410px">ตำแหน่ง</p> 
-    <p style="position:fixed;color:red;margin:615px 140px">ทาง</p>
-    <p style="position:fixed;color:red;margin:615px 410px">วัน</p>
-    <p style="position:fixed;color:red;margin:615px 520px">เดือน</p>
-    <p style="position:fixed;color:red;margin:615px 640px">ปี</p>
-    <p style="position:fixed;color:red;margin:660px 300px">ปี</p>
-    <p style="position:fixed;color:red;margin:705px 540px">เดือนละ</p>
-    <p style="position:fixed;color:red;margin:730px 540px">เหตุผล</p>
-    <p style="position:fixed;color:red;margin:755px 150px">เหตุผล</p>
-    <p style="position:fixed;color:red;margin:795px 150px">เหตุผล</p>
+    <img src="backend/images/work_visa/ตม.7_001.jpg" style="margin:-45px;;width:800px" alt="">
+    <p style=";margin:290px 290px">{{$pdf->f1}}</p>
+    <p style=";margin:290px 530px">{{$pdf->f2}}</p>
+    <p style=";margin:340px 120px">{{$pdf->f3}}</p>
+    <p style=";margin:340px 330px">{{$pdf->f4}}</p>
+    <p style=";margin:340px 0 0 460px">{{substr($pdf->f5,8,2)}}</p>
+    <p style=";margin:340px 550px">{{substr($pdf->f5,5,2)}}</p>
+    <p style=";margin:340px 660px">{{substr($pdf->f5,0,4)}}</p>
+    <p style=";margin:385px 130px">{{$pdf->f6}}</p>
+    <p style=";margin:385px 550px">{{$pdf->f7}}</p>
+    <p style=";margin:430px 370px">{{$pdf->f8}}</p>
+    <p style=";margin:430px 600px">{{substr($pdf->f8,8,2)}}</p>
+    <p style=";margin:478px 90px">{{substr($pdf->f8,5,2)}}</p>
+    <p style=";margin:478px 230px">{{substr($pdf->f8,0,4)}}</p>
+    <p style=";margin:478px 350px">{{$pdf->f9}}</p>
+    <p style=";margin:478px 600px">{{substr($pdf->f10,8,2)}}</p>
+    <p style=";margin:522px 90px">{{substr($pdf->f10,5,2)}}</p>
+    <p style=";margin:522px 230px">{{substr($pdf->f10,0,4)}}</p>
+    <p style=";margin:522px 380px">{{$pdf->f11}}</p>
+    <p style=";margin:568px 170px">{{$pdf->f12}}</p>
+    <p style=";margin:568px 420px">{{$pdf->f13}}</p>
+    <p style=";margin:615px 170px">{{$pdf->f14}}</p>
+    <p style=";margin:615px 420px">{{substr($pdf->f15,8,2)}}</p>
+    <p style=";margin:615px 500px">{{substr($pdf->f15,5,2)}}</p>
+    <p style=";margin:615px 640px">{{substr($pdf->f15,0,4)}}</p>
+    <p style=";margin:660px 340px">{{$pdf->f16}}</p>
+    <p style=";margin:705px 540px">{{$pdf->f17}}</p>
+    <p style=";margin:755px 170px">{{$pdf->f18}}</p>
 </div>
 <div style="page-break-after: unset;">
-    <img src="backend/images/work_visa/ตม.7_002.jpg" style="margin:-45px;position:fixed;width:800px" alt="">
-    <p style="position:fixed;color:red;margin:50px 190px">ที่พัก</p>
-    <p style="position:fixed;color:red;margin:100px 260px">ข้าพเจ้า</p>
-    <p style="position:fixed;color:red;margin:150px 140px">เลขที่</p>
-    <p style="position:fixed;color:red;margin:150px 310px">ถนน</p>
-    <p style="position:fixed;color:red;margin:150px 510px">ตำบล</p>
-    <p style="position:fixed;color:red;margin:200px 140px">อำเภอ</p>
-    <p style="position:fixed;color:red;margin:200px 420px">จังหวัด</p>
-
-
+    <img src="backend/images/work_visa/ตม.7_002.jpg" style="margin:-45px;;width:800px" alt="">
+    <p style=";margin:50px 190px">{{$pdf->f19}}</p>
+    <p style=";margin:100px 260px">{{$pdf->f20}}</p>
+    <p style=";margin:150px 140px">{{$pdf->f21}}</p>
+    <p style=";margin:150px 310px">{{$pdf->f22}}</p>
+    <p style=";margin:150px 510px">{{$pdf->f23}}</p>
+    <p style=";margin:200px 140px">{{$pdf->f24}}</p>
+    <p style=";margin:200px 420px">{{$pdf->f25}}</p>
 </div>
 </body>
 </html>

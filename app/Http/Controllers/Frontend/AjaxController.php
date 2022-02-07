@@ -18,6 +18,16 @@ use App\Models\Backend\employer_data;
 
 class AjaxController extends Controller
 {
+    public function get_w_address(Request $request ,$id){
+        // $id = $request->employer_id;
+        $data = Employer::where("employer.id",$id)->leftjoin("provinces","employer.w_province","provinces.id")
+        ->leftjoin("district","employer.w_district","district.id")
+        ->leftjoin("sub-district","employer.w_subdistrict","sub-district.id")
+        ->select("*","provinces.id as p_id","district.id as d_id","sub-district.id as s_id","provinces.name_th as p_name","district.name_th as d_name","sub-district.name_th as s_name","provinces.name_en as p_name_en","district.name_en as d_name_en","sub-district.name_en as s_name_en")
+        ->first();
+        // dd($data);
+        return $data;
+    }
     public function get_district(Request $request)
     {
         $id = $request->id;

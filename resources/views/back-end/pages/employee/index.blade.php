@@ -17,6 +17,7 @@
     <link href="backend/css/app-rtl.min.css" id="app-rtl" rel="stylesheet" type="text/css" />
     <link href="backend/css/app-dark.min.css" id="app-dark" rel="stylesheet" type="text/css" />
     <link href="backend/css/app.min.css" id="app-light" rel="stylesheet" type="text/css" />
+    <link href="backend/css/jquery.datetimepicker.css" rel="stylesheet" type="text/css" />
     <!-- DataTables -->
     <link rel="stylesheet" type="text/css" href="backend/libs/datatables/datatables.min.css">
     <link rel="stylesheet" type="text/css" href="backend/libs/toastr/toastr.min.css">
@@ -88,6 +89,7 @@
     <script src="backend/libs/jquery/jquery.min.js"></script>
     <script src="backend/libs/bootstrap/bootstrap.min.js"></script>
     <script src="backend/libs/metismenu/metismenu.min.js"></script>
+    <script src="backend/js/js/jquery.datetimepicker.full.js"></script>
     <script src="backend/libs/simplebar/simplebar.min.js"></script>
     <script src="backend/libs/node-waves/node-waves.min.js"></script>
     <script type="text/javascript">$(function() { $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}}); });</script>

@@ -40,6 +40,7 @@ $(function () {
             {data: 'business',    title :'กิจการ',    className: 'text-center w30'}, //4
             {data: 'type',    title :'รายการ',    className: 'text-center w30'}, //5
             {data: 'id',    title :'',    className: 'text-center w70'}, //5
+            {data: 'id',    title :'',    className: 'text-center w70'}, //5
         ],
         rowCallback: function (nRow, aData, dataIndex) {
             // console.log(aData);
@@ -51,34 +52,25 @@ $(function () {
             +aData['prefix_th']+aData['name_th']+'  '+aData['surname_th'], 
             ).addClass('input');
 
-            $('td:eq(3)', nRow).html(''
-            + aData['address_th'], 
-            ).addClass('input');
-
-            $('td:eq(4)', nRow).html(''
-            + aData['tel'], 
-            ).addClass('input');
-
             $('td:eq(5)', nRow).html(''
             + aData['em_name']+' '+aData['em_surname'], 
             ).addClass('input');
 
-            $('td:eq(6)', nRow).html(''
-            + aData['address_th'], 
-            ).addClass('input');
-
-            $('td:eq(7)', nRow).html(''
-            +aData['business'], 
-            ).addClass('input');
-
-            $('td:eq(8)', nRow).html(''
-            +aData['type_name'],     
-            ).addClass('input');
             
             $('td:eq(9)', nRow).html(''
-            +'<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample'+dataIndex+'" aria-expanded="false" aria-controls="collapseExample">ดำเนินการ</button>'
-            +'<div class="collapse" id="collapseExample'+dataIndex+'"><a style="width:70%;margin:5px 0px" href="'+segment+'/'+folder+'/detail/'+aData["title_id"]+'"class="btn btn-sm btn-success">ดูข้อมูล</a></div>'
-            +'<div class="collapse" id="collapseExample'+dataIndex+'"><a style="width:70%;margin:5px 0px" href="'+segment+'/'+folder+'/edit/'+aData["title_id"]+'"class="btn btn-sm btn-success">แก้ไขข้อมูล</a></div>'
+            +'<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#Menu1'+dataIndex+'" aria-expanded="false" aria-controls="Menu1">จัดการข้อมูล</button>'
+            +'<div class="collapse" id="Menu1'+dataIndex+'"><a style="width:50%;margin:5px 0px" target="_blank" href="'+segment+'/'+folder+'/employer/'+aData["title_id"]+'"class="btn btn-sm btn-success">ข้อมูลนายจ้าง</a></div>'
+            +'<div class="collapse" id="Menu1'+dataIndex+'"><a style="width:50%;margin:5px 0px" target="_blank" href="'+segment+'/'+folder+'/employee/'+aData["title_id"]+'"class="btn btn-sm btn-success">ข้อมูลแรงงาน</a></div>'
+            +'<div class="collapse" id="Menu1'+dataIndex+'"><a style="width:50%;margin:5px 0px" target="_blank" href="'+segment+'/'+folder+'/follower/'+aData["title_id"]+'"class="btn btn-sm btn-success">ข้อมูลผู้ติดตาม</a></div>'
+            ).addClass('input');
+
+            $('td:eq(10)', nRow).html(''
+            +'<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#Menu2'+dataIndex+'" aria-expanded="false" aria-controls="Menu1">ดูเอกสาร</button>'
+            +'<div class="collapse" id="Menu2'+dataIndex+'"><a style="width:50%;margin:5px 0px" target="_blank" href="form/pk1/'+aData["title_id"]+'"class="btn btn-sm btn-success">ท.บ.1</a></div>'
+            +'<div class="collapse" id="Menu2'+dataIndex+'"><a style="width:50%;margin:5px 0px" target="_blank" href="form/pk2/'+aData["title_id"]+'"class="btn btn-sm btn-success">ท.บ.2</a></div>'
+            +'<div class="collapse" id="Menu2'+dataIndex+'"><a style="width:50%;margin:5px 0px" target="_blank" href="form/pk3/'+aData["title_id"]+'"class="btn btn-sm btn-success">ตม.7</a></div>'
+            +'<div class="collapse" id="Menu2'+dataIndex+'"><a style="width:50%;margin:5px 0px" target="_blank" href="form/pk4/'+aData["title_id"]+'"class="btn btn-sm btn-success">หนังสือมอบอำนาจ</a></div>'
+            +'<div class="collapse" id="Menu2'+dataIndex+'"><a style="width:50%;margin:5px 0px" target="_blank" href="form/pk7/'+aData["title_id"]+'"class="btn btn-sm btn-success">สัญญาจ้างกัมพูชา</a></div>'
             ).addClass('input');
         }
     });
@@ -88,11 +80,27 @@ $(function () {
         serverSide: true,
         stateSave: true,
         scroller: true,
+        searching: false,
         scrollCollapse: true,
         scrollX: true,
         ordering: false,
         // scrollY: ''+($(window).height()-370)+'px',
         iDisplayLength: 25,
+        dom: 'Bfrtip',
+        buttons: [
+            {
+              extend: 'excel',
+              filename: 'ข้อมูลผู้ใช้ระบบ',
+              title: 'ข้อมูลผู้ใช้ระบบ',
+              className:'btn btn-success',
+              exportOptions: {
+                columns: ':visible',
+                stripHtml: true,
+                //columns: [ 0, 1,2,3,4]
+              },
+            },
+          ],
+
         ajax: {
             url: fullUrl+"/datatable_workpermit",
             data: function (d) {
@@ -128,28 +136,8 @@ $(function () {
             +aData['prefix_th']+aData['name_th']+'  '+aData['surname_th'], 
             ).addClass('input');
 
-            $('td:eq(3)', nRow).html(''
-            + aData['address_th'], 
-            ).addClass('input');
-
-            $('td:eq(4)', nRow).html(''
-            + aData['tel'], 
-            ).addClass('input');
-
             $('td:eq(5)', nRow).html(''
             + aData['em_name']+' '+aData['em_surname'], 
-            ).addClass('input');
-
-            $('td:eq(6)', nRow).html(''
-            + aData['address_th'], 
-            ).addClass('input');
-
-            $('td:eq(7)', nRow).html(''
-            +aData['business'], 
-            ).addClass('input');
-
-            $('td:eq(8)', nRow).html(''
-            +aData['type_name'],     
             ).addClass('input');
             
             $('td:eq(9)', nRow).html(''
@@ -164,6 +152,7 @@ $(function () {
         serverSide: true,
         stateSave: true,
         scroller: true,
+        searching: false,
         scrollCollapse: true,
         scrollX: true,
         ordering: false,
@@ -201,7 +190,7 @@ $(function () {
             {data: 'DT_RowIndex',    title :'#',    className: 'text-center w10'}, // 0
             {data: 'name_th',    title :'ชื่อคนงาน',    className: 'text-center w30'}, //4
             {data: 'passport_number',    title :'เลขพาส',    className: 'text-center w30'}, //4
-            {data: 'country',    title :'สัญชาติ',    className: 'text-center w30'}, //4
+            {data: 'nationality',    title :'สัญชาติ',    className: 'text-center w30'}, //4
             {data: 'visa_status',    title :'ไปได้/ไม่ได้',    className: 'text-center w30'}, //5
             {data: 'visa_note',    title :'หมายเหตุ',    className: 'text-center w70'}, //5 
         ],
@@ -211,13 +200,6 @@ $(function () {
             +aData['prefix_th']+aData['name_th']+'  '+aData['surname_th'], 
             ).addClass('input');
 
-            $('td:eq(2)', nRow).html(''
-            + aData['passport_number'], 
-            ).addClass('input');
-
-            $('td:eq(3)', nRow).html(''
-            + aData['country'], 
-            ).addClass('input');
 
             option1 = '<option value="ไม่ได้">ไม่ได้</option>';
             option2 = '<option value="ไปได้">ไปได้</option>';
@@ -252,6 +234,7 @@ $(function () {
         processing: true,
         serverSide: true,
         stateSave: true,
+        searching: false,
         scroller: true,
         scrollCollapse: true,
         scrollX: true,
@@ -289,23 +272,16 @@ $(function () {
             {data: 'DT_RowIndex',    title :'#',    className: 'text-center w10'}, // 0
             {data: 'name_th',    title :'ชื่อคนงาน',    className: 'text-center w30'}, //4
             {data: 'passport_number',    title :'เลขพาส',    className: 'text-center w30'}, //4
-            {data: 'country',    title :'สัญชาติ',    className: 'text-center w30'}, //4
+            {data: 'nationality',    title :'สัญชาติ',    className: 'text-center w30'}, //4
             {data: 'nationalproof_status',    title :'ไปได้/ไม่ได้',    className: 'text-center w30'}, //5
             {data: 'nationalproof_note',    title :'หมายเหตุ',    className: 'text-center w70'}, //5 
         ],
         rowCallback: function (nRow, aData, dataIndex) {
-            // console.log(aData);
+            console.log(aData);
             $('td:eq(1)', nRow).html(''
             +aData['prefix_th']+aData['name_th']+'  '+aData['surname_th'], 
             ).addClass('input');
 
-            $('td:eq(2)', nRow).html(''
-            + aData['passport_number'], 
-            ).addClass('input');
-
-            $('td:eq(3)', nRow).html(''
-            + aData['country'], 
-            ).addClass('input');
 
             option1 = '<option value="ไม่ได้">ไม่ได้</option>';
             option2 = '<option value="ไปได้">ไปได้</option>';
@@ -341,6 +317,7 @@ $(function () {
         serverSide: true,
         stateSave: true,
         scroller: true,
+        searching: false,
         scrollCollapse: true,
         scrollX: true,
         ordering: false,
@@ -360,6 +337,7 @@ $(function () {
               },
             },
           ],
+
         ajax: {
             url: fullUrl+"/datatable_pinkcard",
             data: function (d) {
@@ -377,7 +355,7 @@ $(function () {
             {data: 'DT_RowIndex',    title :'#',    className: 'text-center w10'}, // 0
             {data: 'name_th',    title :'ชื่อคนงาน',    className: 'text-center w30'}, //4
             {data: 'passport_number',    title :'เลขพาส',    className: 'text-center w30'}, //4
-            {data: 'country',    title :'สัญชาติ',    className: 'text-center w30'}, //4
+            {data: 'nationality',    title :'สัญชาติ',    className: 'text-center w30'}, //4
             {data: 'pinkcard_status',    title :'ไปได้/ไม่ได้',    className: 'text-center w30'}, //5
             {data: 'pinkcard_note',    title :'หมายเหตุ',    className: 'text-center w70'}, //5 
         ],
@@ -385,14 +363,6 @@ $(function () {
             // console.log(aData);
             $('td:eq(1)', nRow).html(''
             +aData['prefix_th']+aData['name_th']+'  '+aData['surname_th'], 
-            ).addClass('input');
-
-            $('td:eq(2)', nRow).html(''
-            + aData['passport_number'], 
-            ).addClass('input');
-
-            $('td:eq(3)', nRow).html(''
-            + aData['country'], 
             ).addClass('input');
 
             option1 = '<option value="ไม่ได้">ไม่ได้</option>';
@@ -417,10 +387,6 @@ $(function () {
             if(aData['pinkcard_note'] == null){
                 aData['pinkcard_note'] ="-";
             }
-            $('td:eq(5)', nRow).html(''
-            + aData['pinkcard_note'], 
-            ).addClass('input');
-           
         }
     });
     oTable = $('#data-table-health').DataTable({
@@ -429,11 +395,27 @@ $(function () {
         serverSide: true,
         stateSave: true,
         scroller: true,
+        searching: false,
         scrollCollapse: true,
         scrollX: true,
         ordering: false,
         // scrollY: ''+($(window).height()-370)+'px',
         iDisplayLength: 25,
+        dom: 'Bfrtip',
+        buttons: [
+            {
+              extend: 'excel',
+              filename: 'ข้อมูลผู้ใช้ระบบ',
+              title: 'ข้อมูลผู้ใช้ระบบ',
+              className:'btn btn-success',
+              exportOptions: {
+                columns: ':visible',
+                stripHtml: true,
+                //columns: [ 0, 1,2,3,4]
+              },
+            },
+          ],
+
         ajax: {
             url: fullUrl+"/datatable_health",
             data: function (d) {
@@ -451,8 +433,7 @@ $(function () {
             {data: 'DT_RowIndex',    title :'#',    className: 'text-center w10'}, // 0 
             {data: 'name_th',    title :'ชื่อนายจ้าง',    className: 'text-center w30'}, //2 
             {data: 'name_th',    title :'ชื่อคนงาน',    className: 'text-center w30'}, //4
-            {data: 'country',    title :'สัญชาติ',   className: 'text-center w30'}, //4
-            // {data: 'amount',    title :'จำนวน',    className: 'text-center w30'}, //4
+            {data: 'nationality',    title :'สัญชาติ',   className: 'text-center w30'}, //4
             {data: 'inspector',    title :'สถานที่ตรวจ',    className: 'text-center w30'}, //4
             {data: 'insurance_period',    title :'ระยะเวลาประกัน',    className: 'text-center w30'}, //4
             {data: 'insurance_create',    title :'เริ่ม',    className: 'text-center w30'}, //4
@@ -468,41 +449,56 @@ $(function () {
 
             $('td:eq(2)', nRow).html(''
             +aData['em_name']+'  '+aData['em_surname'], 
-            ).addClass('input');
-
-            $('td:eq(3)', nRow).html(''
-            + aData['country'], 
-            ).addClass('input');
-
-            $('td:eq(4)', nRow).html(''
-            // + aData['amount'], 
-            ).addClass('input');
-
-            $('td:eq(5)', nRow).html(''
-            + aData['inspector'], 
-            ).addClass('input');
-
-            $('td:eq(6)', nRow).html(''
-            + aData['insurance_period'], 
-            ).addClass('input');
-
-            $('td:eq(7)', nRow).html(''
-            + aData['insurance_create'],
-            ).addClass('input');
-
-            $('td:eq(8)', nRow).html(''
-            + aData['insurance_expire'],
-            ).addClass('input');
-            
-            $('td:eq(9)', nRow).html(''
-            + aData['insurance_right'],
-            ).addClass('input');
-            
+            ).addClass('input'); 
             $('td:eq(9)', nRow).html(''
             +'<button class="btn btn-primary" type="button" OnClick="formHealth('+aData['title_id']+')" >ดูรายละเอียด</button>'
              ).addClass('input');
         }
     });
+    oTable = $('#data-table-employer').DataTable({
+        "sDom": "<'row'<'col-sm-12'tr>><'row'<'col-sm-5'i><'col-sm-'p>>",
+        processing: true,
+        serverSide: true,
+        stateSave: true,
+        scroller: true,
+        scrollCollapse: true,
+        scrollX: true,
+        ordering: false,
+        // scrollY: ''+($(window).height()-370)+'px',
+        iDisplayLength: 25,
+        ajax: {
+            url: fullUrl+"/employer/datatable/"+$('#employer_id').val(),
+            data: function (d) {
+                d.Like={};
+                $('.myLike').each(function() {
+                if( $.trim($(this).val()) && $.trim($(this).val()) != '0' ){
+                    d.Like[$(this).attr('name')] = $.trim($(this).val());
+                }
+                });
+                oData = d;
+            },
+            method: 'GET'
+        },
+        columns: [
+            {data: 'DT_RowIndex',    title :'#',    className: 'text-center w10'}, // 0 
+            {data: 'name_th',    title :'ชื่อนายจ้าง',    className: 'text-center w30'}, //2 
+            {data: 'name_th',    title :'ชื่อคนงาน',    className: 'text-center w30'}, //4
+            {data: 'nationality',    title :'สัญชาติ',   className: 'text-center w30'}, //4
+            {data: 'inspector',    title :'สถานที่ตรวจ',    className: 'text-center w30'}, //4
+            {data: 'insurance_period',    title :'ระยะเวลาประกัน',    className: 'text-center w30'}, //4
+            {data: 'insurance_create',    title :'เริ่ม',    className: 'text-center w30'}, //4
+            {data: 'insurance_expire',    title :'หมด',    className: 'text-center w30'}, //4
+            {data: 'insurance_right',    title :'โรงพยาบาล',    className: 'text-center w30'}, //5
+            {data: 'id',    title :'',    className: 'text-center w30'}, //5
+        ],
+        rowCallback: function (nRow, aData, dataIndex) {
+
+            $('td:eq(9)', nRow).html(''
+            +'<a class="btn btn-primary" type="button" href="webpanel/pinkcard/employer/datatable/'+aData['id']+'" >แก้ไขข้อมูล</a>'
+             ).addClass('input');
+        }
+    });
+
     $('.myWhere,.myLike,.myCustom,#onlyTrashed').keyup('change', function(e){
         oTable.draw();
     });
@@ -518,7 +514,52 @@ $(function () {
 
 });
 
+function manage_follower($id = null){
+    if($id != null){
+        // alert("edit")
+        $("#sub_table_follower").prop("hidden",false)
+        $("sub_title").val("แก้ไขข้อมูล")
+        $.ajax({
+            url: fullUrl+'/get_follower/'+$id,
+            method:"post",
+            success:function(result){
+                if(result["image"]!=null){
+                    $("#preview").attr("src",result["image"])
+                }
+                $('#edit_prefix option[value='+result["prefix"]+']').attr('selected','selected');
+                $("#edit_name").val(result["name"])
+                $("#edit_surname").val(result["surname"])
+                $("#edit_age").val(result["age"])
+                $("#edit_b_date").val(result["b_date"])
+                $("#follower_id").val(result["id"])
+            }
+        })
+    }else{
+        $("sub_title").val("เพิ่มข้อมูล")
+        $("#preview").val("noimage.jpg")
+        $("#sub_table_follower").prop("hidden",false)
+        $('#edit_prefix').prop('selectedIndex',0);
+        $("#edit_name").val("")
+        $("#edit_surname").val("")
+        $("#edit_age").val("")
+        $("#edit_b_date").val("")
+        $("#follower_id").val("")
+    }
+}
 
+$("#image").on('change', function() {
+    var $this = $(this)
+    const input = $this[0];
+    const fileName = $this.val().split("\\").pop();
+    $this.siblings(".custom-file-label").addClass("selected").html(fileName)
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            $('#preview').attr('src', e.target.result).fadeIn('fast');
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
+});
 $('#select_employer').change(function(){
     $.ajaxSetup({
         headers: {
@@ -951,7 +992,7 @@ $('#subdistrict_edit').change(function(){
 
 
 
-$('#workplace_province_id_edit').change(function(){
+$('#province_id_edit').change(function(){
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
@@ -962,7 +1003,7 @@ $('#workplace_province_id_edit').change(function(){
         // alert(province_id);
         var _token = $('#_token').val();
         $('[name="zipcode"]').val('');
-        $('[name="workplace_district_id_edit"]').val('กรุณาเลือกตำบล');
+        $('[name="district_id_edit"]').val('กรุณาเลือกตำบล');
         $.ajax({
             url:'/ajax/get_distirct',
             method:"get",
@@ -974,7 +1015,7 @@ $('#workplace_province_id_edit').change(function(){
             success:function(result)
             {   
                 
-                $("#workplace_district_id_edit").html(result);
+                $("#district_id_edit").html(result);
             }
         })
         $.ajax({
@@ -995,7 +1036,7 @@ $('#workplace_province_id_edit').change(function(){
 )
 
 
-$('#workplace_district_id_edit').change(function(){
+$('#district_id_edit').change(function(){
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
@@ -1038,7 +1079,7 @@ $('#workplace_district_id_edit').change(function(){
     }
 ),
 
-$('#workplace_subdistrict_id_edit').change(function(){
+$('#subdistrict_id_edit').change(function(){
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
@@ -1092,15 +1133,15 @@ $('#workplace_type').change(function(){
     var workplace = $('#workplace_type').val();
     if(workplace!=0){
         
-        $("#workplace_province").val($("#province").val());
-        $("#workplace_district").val($("#district").val());
-        $("#workplace_subdistrict").val($("#subdistrict").val());
-        $("#workplace_zipcode").val($("#zipcode").val());
+        $("#province").val($("#province").val());
+        $("#district").val($("#district").val());
+        $("#subdistrict").val($("#subdistrict").val());
+        $("#zipcode").val($("#zipcode").val());
 
-        $("#workplace_province_en").val($("#province_en").val());
-        $("#workplace_district_en").val($("#district_en").val());
-        $("#workplace_subdistrict_en").val($("#subdistrict_en").val());
-        $("#workplace_zipcode_en").val($("#zipcode_en").val());
+        $("#province_en").val($("#province_en").val());
+        $("#district_en").val($("#district_en").val());
+        $("#subdistrict_en").val($("#subdistrict_en").val());
+        $("#zipcode_en").val($("#zipcode_en").val());
     }    
 })
 function selectlist(name,id){
@@ -1124,6 +1165,8 @@ function selectlist(name,id){
                     },
                 success: function () {
                     alert("แก้ไขสถานะสำเร็จ");
+                    if($("#worktype").val()=="nationalproof")
+                        $("#worktype").val("nationality_proof")
                     window.location.href = "webpanel/pinkcard/"+$("#worktype").val();
                 }
             });
@@ -1205,9 +1248,6 @@ function showDoc(id){
                 $("#showdoc").html(res);     
         }
     });
-}
-function formHealth (id){
-    alert(id);
 }
 function check_add() {
     var role = $('#role').val();

@@ -15,6 +15,7 @@ use App\Models\Backend\Provinces;
 use App\Models\Backend\District;
 use App\Models\Backend\SubDistrict;
 use App\Models\Backend\pdf_detail;
+use App\Models\Backend\Bill;
 // use Codedge\Fpdf\Fpdf\Fpdf;
 use PDF;
  
@@ -30,14 +31,12 @@ class PDFController extends Controller
         $result = title_data::find($id);
         $employer_id  = $result->employer_id;
         $employee_id  = $result->employee_id;
-        // $chk = pdf_detail::where("title_id",$id)->first();
         $chk = pdf_detail::leftjoin("pdf_detail2","pdf_detail.id","pdf_detail2._id")
         ->where("title_id",$id)
         ->where("pdf_type",$type)
         ->first();
         // dd($chk);
         if($chk != null){
-            
             $result = array(
                 'result' => $result,
                 'pdf' => $chk,
@@ -45,11 +44,12 @@ class PDFController extends Controller
         }else{
             /* code for test */
             $pdf = new \stdClass();
-                for($i=1;$i<150;$i++){
-            $pdf->{"f".$i} = $i ;
+            for($i=1;$i<150;$i++){
+                $pdf->{"f".$i} = $i ;
             }
             /* end test code */
 
+            // dd($pdf);
             $resultr = employer_data::where("id","=",$employer_id)->first();
             $resulte = employee_data::where("id","=",$employee_id)->first();
             $rowrp = Provinces::where("id","=",$resultr->province_id)->first();
@@ -75,7 +75,6 @@ class PDFController extends Controller
         return $result;
     }
     public function view(request $request,$type,$id){
-        // dd($result);
         $stype = substr($type,0,2);
         $file = substr($type,2,1);
         $result = $this->getdata($id,$type);
@@ -92,7 +91,7 @@ class PDFController extends Controller
         }else if($stype =="mc"){
             $folder = "mou/cambodia";
         }
-        
+        // dd($result);
         view()->share('result',$result);
         $pdf = PDF::loadView('back-end/pages/file_pdf/'.$folder.'/'.$file,$result); 
         return $pdf->stream();    
@@ -125,10 +124,14 @@ class PDFController extends Controller
         $rowrp = Provinces::where("id","=",$resultr->province_id)->first();
         $rowrd = District::where("id","=",$resultr->district_id)->first();
         $rowrsd = SubDistrict::where("id","=",$resultr->subdistrict_id)->first();
-        $rowep = Provinces::where("id","=",$resulte->workplace_province_id)->first();
-        $rowed = District::where("id","=",$resulte->workplace_district_id)->first();
-        $rowesd = SubDistrict::where("id","=",$resulte->workplace_subdistrict_id)->first();
+        $rowep = Provinces::where("id","=",$resulte->province_id)->first();
+        $rowed = District::where("id","=",$resulte->district_id)->first();
+        $rowesd = SubDistrict::where("id","=",$resulte->subdistrict_id)->first();
         
+        $province = Provinces::get();
+        $district = District::get();
+        $subdistrict = SubDistrict::get();
+        // dd($resulte);
         $pdf = pdf_detail::leftjoin("pdf_detail2","pdf_detail.id","pdf_detail2._id")
         ->where("title_id",$id)
         ->where("pdf_type",$type)
@@ -139,7 +142,7 @@ class PDFController extends Controller
         if($pdf){
             return view($url,[
                 'js' => [
-                    ["type"=>"text/javascript","src"=>"backend/build/backend/employee.js"],
+                    ["type"=>"text/javascript","src"=>"backend/build/backend/pdf.js"],
                     ["src"=>'backend/js/sweetalert2.all.min.js'],
                 ],
                 'prefix' => $this->prefix,
@@ -148,11 +151,14 @@ class PDFController extends Controller
                 'pdf' => $pdf,
                 'page'=> $type,
                 'title_id'=> $id,
+                'province'=>$province,
+                'district'=>$district,
+                'subdistrict'=>$subdistrict,
             ]);
         }else{
             return view($url,[
                 'js' => [
-                    ["type"=>"text/javascript","src"=>"backend/build/backend/employee.js"],
+                    ["type"=>"text/javascript","src"=>"backend/build/backend/pdf.js"],
                     ["src"=>'backend/js/sweetalert2.all.min.js'],
                 ],
                 'prefix' => $this->prefix,
@@ -169,6 +175,9 @@ class PDFController extends Controller
                 'rowesd' => $rowesd,
                 'page'=> $type,
                 'title_id'=> $id,
+                'province'=>$province,
+                'district'=>$district,
+                'subdistrict'=>$subdistrict,
             ]);
         }
     }
@@ -176,7 +185,6 @@ class PDFController extends Controller
         $data = pdf_detail::where("title_id",$request->title_id)
         ->where("pdf_type",$request->pdf_type)->first();
         if($data){
-            
         }else{
             $data = new pdf_detail;
             $data->pdf_type = $request->pdf_type;
@@ -187,17 +195,33 @@ class PDFController extends Controller
             $new_id  = pdf_detail::first();
             $data2->_id = $new_id + 1;
         }
-        for($i=1;$i < $request->pages+1;$i++){
-            if($request->input('f'.$i) == ""){
 
-            }else{
+        if(isset($request->type) AND $request->type =="f"){
+                $i = 1;
+            foreach($request->f as $f){
                 if($i>60){
-                    $data2->{"f".$i} = $request->input('f'.$i);  
+                    $data2->{"f".$i} = $f;  
                 }else{
-                    $data->{"f".$i} = $request->input('f'.$i);         
+                    $data->{"f".$i} = $f;         
+                }
+                $i++;
+            }
+            
+        }else{
+            for($i=1;$i < $request->pages+1;$i++){
+                if($request->input('f'.$i) == ""){
+
+                }else{
+                    if($i>60){
+                        $data2->{"f".$i} = $request->input('f'.$i);  
+                    }else{
+                        $data->{"f".$i} = $request->input('f'.$i);         
+                    }
                 }
             }
         }
+
+
         // dd($data);
         if($data->save()){
             if(isset($data2)){
@@ -221,13 +245,17 @@ class PDFController extends Controller
             return redirect("view/$request->pdf_type/$request->title_id");
         }
     }
-    public function view_pdf(Request $request,$id){
-        if($id == 1){
+    
+    public function view_bill(request $request,$id){
+        // if($id == 1){
             $url = "back-end/pages/file_pdf/bill/index";
-        }else{
-            $url = "back-end/pages/file_pdf/bill/bill";
-        }
-        $pdf = PDF::loadView($url); 
+        // }else{
+        //     $url = "back-end/pages/file_pdf/bill/bill";
+        // }
+        $result = Bill::find($id);
+        view()->share('result',$result);
+        $pdf = PDF::loadView($url,$result); 
         return $pdf->stream();    
+        
     }
 }

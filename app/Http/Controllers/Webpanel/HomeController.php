@@ -39,7 +39,7 @@ class HomeController extends Controller
                     ->leftjoin('users','title_data.created_by',"=","users.id")
                     // ->where('title_data.received_by','=',null)
                     ->where('report.delete_status','=','off')
-                    ->select('*','report.created as report_create','report.id as report_id','report.typename as report_name','report.note as report_note','title_data.created as title_created','employee_data.name as em_name','employee_data.surname as em_surname','employer_data.tel_number as tel','title_data.id as title_id')
+                    ->select('*','report.created as report_create','report.id as report_id','report.typename as report_name','report.note as report_note','title_data.created as title_created','employee_data.name_th as em_name','employee_data.surname_th as em_surname','employer_data.tel_number as tel','title_data.id as title_id')
                     ->get(),
         ]);
     }

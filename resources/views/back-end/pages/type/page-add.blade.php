@@ -24,17 +24,28 @@
                                 <div class="card-body">
                                     <form id="menuForm" method="post" action="" onsubmit="return check_add();">                        
                                         @csrf
-                                        <div class="form-group">
-                                            <button class="btn btn-primary" type="submit" name="signup" value="Create">บันทึกข้อมูล</button>
-                                            <a class="btn btn-danger" href="{{url("$segment/$folder")}}">ยกเลิก</a>
-                                        </div>
                                         <hr>   
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="row">
-                                                    <div class="form-group col-md-12">
-                                                        <label for="type">ประเภท</label>
-                                                        <input type="text" class="form-control" name="type" id="type">
+                                                    <div class="form-group col-md-6">
+                                                        <label for="type">ประเภทบิล</label>
+                                                        <select name="type" id="type" required class="form-control">
+                                                            <option value="" hidden>----</option>
+                                                            <option value="บิลรายรับ">บิลรายรับ</option>
+                                                            <option value="บิลรายจ่าย">บิลรายจ่าย</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label for="category">หมวดหมู่</label>
+                                                        <select class="form-control" required name="category" id="category">
+                                                            <option value="" hidden>----</option>
+                                                            <option value="mou">mou</option>
+                                                            <option value="บัตรชมพู">บัตรชมพู</option>
+                                                            <option value="BorderPass">BorderPass</option>
+                                                            <option value="ต่อ work-visa">ต่อ work-visa</option>
+                                                            <option value="อื่นๆ">อื่น</option>
+                                                        </select>    
                                                     </div>
                                                 </div>
                                             </div>
@@ -42,19 +53,13 @@
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="row">
-                                                    <div class="form-group col-md-12">
-                                                        <label for="type_name">รายการ</label>
-                                                        <input type="text" class="form-control" name="type_name" id="type_name">
+                                                    <div class="form-group col-md-6">
+                                                        <label for="name">ชื่อรายการ</label>
+                                                        <input type="text" required class="form-control" name="name" id="name">
                                                     </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="row">
-                                                    <div class="form-group col-md-12">
+                                                    <div class="form-group col-md-6">
                                                         <label for="cost">ราคา/หน่วย</label>
-                                                        <input type="text" class="form-control" name="cost" id="cost">
+                                                        <input type="text" required class="form-control" name="cost" id="cost">
                                                     </div>
                                                 </div>
                                             </div>

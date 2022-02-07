@@ -29,24 +29,22 @@ class TypeController extends Controller
     public function datatable(Request $request)
     {
         $like = $request->Like;
-        $sTable = Type::get();
-        // dd($sTable);
-        return Datatables::of($sTable)
-        ->addIndexColumn()
-        ->addColumn('created_at', function($row)
-        {
-            $data = date('d/m/Y',strtotime($row->created_at));
-            return $data;
-        })
-        ->rawColumns(['created_at'])
-        ->make(true);
-        
-    }
-    public function datatable_type_detail(Request $request)
-    {
-        // dd($request);
-        // $like = $request->Like;
-        $sTable = typedetail::where("type_id",'=',$request->id)->get();
+        // dd($like);
+        $sTable = Type::where("delete_status","off")
+        ->when($like, function($query) use ($like){
+            if(@$like['name'] != "")
+            {
+                $query->where('name','like','%'.$like['name'].'%');
+            }
+            if(@$like['type'] != "")
+            {
+                $query->where('type','like','%'.$like['type'].'%');
+            }
+            if(@$like['status_active'] != "")
+            {
+                $query->where('status','like','%'.$like['status_active'].'%');
+            }
+        })->get();
         // dd($sTable);
         return Datatables::of($sTable)
         ->addIndexColumn()
@@ -71,7 +69,6 @@ class TypeController extends Controller
             'folder' => $this->folder,
             'segment' => $this->segment,
             'page' => 'index',
-            'rows' => type::orderby('id','desc')->get(),
         ]);
     }
     public function add(Request $request)
@@ -108,13 +105,16 @@ class TypeController extends Controller
             if($request->status == "insert"){
                 $data = new type;
                 $data->created = date('Y-m-d H:i:s');
+                $data->delete_status  = "off";
+                $data->status  = "on";
             }else{
                 $data = type::find($request->id);
                 $data->updated = date('Y-m-d H:i:s');
             }
             $data->type  = $request->type;
-            $data->type_name  = $request->type_name;
-            $data->cost  = $request->cost;
+            $data->category  = $request->category;
+            $data->name  = $request->name;
+            $data->price  = $request->price;
             if($data->save()){
                 \DB::commit();
                 return view("$this->prefix.alert.success",['url'=> url("$this->segment/$this->folder")]);
@@ -149,58 +149,5 @@ class TypeController extends Controller
         ]);
         
     }
-    public function type_detail(Request $request,$id){
-        return view("$this->prefix.pages.$this->folder.index",[
-        'js' => [
-            ["type"=>"text/javascript","src"=>"backend/build/backend/type.js"],
-            ["src"=>'backend/js/sweetalert2.all.min.js'],
-        ],
-        'prefix' => $this->prefix,
-        'folder' => $this->folder,
-        'segment' => $this->segment,
-        'page' => 'type_detail',
-        'id'=> $id,
-        'row' => type::find($id),
-        'rows' => typedetail::where("type_id",'=',$id)->get(),
-        ]);
-    }
-    public function store_detail(Request $request)
-    {
-        \DB::beginTransaction();
-        try
-        {
-            dd($request);
-            if($request->status == "insert"){
-                $data = new typedetail;
-                $data->created = date('Y-m-d H:i:s');
-                $data->type_id = $request->id;
-                $data->name  = $request->type_name;
-                $data->cost  = $request->price;
-            }else{
-                $data = typedetail::find($request->detail_id);
-                $data->updated = date('Y-m-d H:i:s');
-                $data->name = $request->type_name_edit;
-                $data->cost = $request->price_edit;
-            }
-            if($data->save()){
-                \DB::commit();
-                return view("$this->prefix.alert.success",['url'=> url("$this->segment/$this->folder/type_detail/$request->id")]);
-            }else{
-                return view("$this->prefix.alert.error",['url'=> url("$this->segment/$this->folder/add")]);
-            }
-        }
-        catch(\Exception $e)
-        {
-            \DB::rollback();
-            $error_log = $e->getMessage();
-            $error_line = $e->getLine();
-            $type_status = 'error';
-            $error_url = url()->current();
-            echo $error_log." ".$error_line." ".$error_url;
-        }
-    }
-    public function getdata(Request $request , $id){
-        return typedetail::find($id);
-    }    
-
 }
+

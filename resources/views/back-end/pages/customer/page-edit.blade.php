@@ -44,9 +44,9 @@
                                             <div class="col-md-12">
                                                 <div class="row">
                                                     <div class="form-group col-md-6">
-                                                        <input type="radio" checked name="type" id="type">
+                                                        <input type="radio" checked name="type" id="type1" value="บุคคล" @if($rows->type=="บุคคล") checked @endif>
                                                         <label for="position">บุคคล</label>   
-                                                        <input type="radio" name="type" id="type"> 
+                                                        <input type="radio" name="type" id="type2" value="บริษัท" @if($rows->type=="บริษัท") checked @endif> 
                                                         <label for="position">บริษัท</label>   
                                                     </div>
                                                 </div>
@@ -116,15 +116,15 @@
                                                     </div>
                                                     <div class="form-group col-md-2">
                                                         <label for="position">ชื่อ(EN)</label>
-                                                        <input class="form-control"name="name_en"   id="name_en" type="text">
+                                                        <input class="form-control"name="name_en" value="{{$rows->name_en}}" id="name_en" type="text">
                                                     </div>
                                                     <div class="form-group col-md-2">
                                                         <label for="position">นามสกุล(EN)</label>
-                                                        <input class="form-control"name="surname_en"  id="surname_en" type="text">
+                                                        <input class="form-control"name="surname_en" value="{{$rows->surname_en}}" id="surname_en" type="text">
                                                     </div>
                                                     <div class="form-group col-md-2">
                                                         <label for="position">ชื่อเล่น(EN)</label></label>
-                                                        <input class="form-control"name="nickname_en"  id="nickname_en" type="text">
+                                                        <input class="form-control"name="nickname_en" value="{{$rows->nickname_en}}" id="nickname_en" type="text">
                                                     </div>
                                                 </div>
                                             </div>
@@ -135,20 +135,19 @@
                                                 <div class="row">
                                                 <div class="form-group col-md-2">
                                                         <label for="position">ที่อยู่(TH)</label>
-                                                        <input class="form-control"name="address_th"  id="address_th" type="text">
+                                                        <input class="form-control"name="address_th" value="{{$rows->address_th}}" id="address_th" type="text">
                                                     </div>
                                                     <div class="form-group col-md-2">
                                                         <label for="position">หมู่(TH)</label>
-                                                        <input class="form-control"name="group_th"  id="group_th" type="text">
+                                                        <input class="form-control"name="group_th" value="{{$rows->group_th}}" id="group_th" type="text">
                                                     </div>
                                                     <div class="form-group col-md-2">
                                                         <label for="position">ถนน(TH)</label>
-                                                        <input class="form-control"name="road_th"  id="road_th" type="text">
-                                                        </select>
+                                                        <input class="form-control"name="road_th" value="{{$rows->road_th}}" id="road_th" type="text">
                                                     </div>
                                                     <div class="form-group col-md-2">
                                                         <label for="position">ซอย(TH)</label>
-                                                        <input class="form-control" type="text" id="alley_th" name="alley_th">
+                                                        <input class="form-control" type="text" value="{{$rows->alley_th}}" id="alley_th" name="alley_th">
                                                     </div>
                                                     
                                                 </div>
@@ -162,27 +161,31 @@
                                                         <label>จังหวัด(TH)</label>
                                                         <select name="province" id="province" class="form-control">
                                                             <option value="">เลือกจังหวัด</option>
-                                                                @foreach(@$rows_province as $rowP){ 
-                                                                    <option value="{{$rowP->id}}">{{$rowP->name_th}}</option>
-                                                                @endforeach
+                                                            @foreach($rowsP as $row)
+                                                                <option @if($row->id == $rows->province_id) selected @endif value="{{$row->id}}">{{$row->name_th}}</option>
+                                                            @endforeach
                                                         </select>
                                                     </div>
                                                     <div class="form-group col-md-2">
                                                         <label for="district">อำเภอ(TH)</label>
                                                         <select name="district" id="district" class="form-control">
-                                                            <option value="">เลือกอำเภอ</option>
+                                                            @foreach($rowsD as $row)
+                                                                <option @if($row->id == $rows->district_id) selected @endif value="{{$row->id}}">{{$row->name_th}}</option>
+                                                            @endforeach
                                                         </select>
                                                         <!-- <div id="fetch_amphure"></div> -->
                                                     </div>
                                                     <div class="form-group col-md-2">
                                                         <label for="subdistrict">ตำบล(TH)</label>
                                                         <select name="subdistrict" id="subdistrict" class="form-control">
-                                                            <option value="">เลือกตำบล</option>
+                                                            @foreach($rowsSD as $row)
+                                                                <option @if($row->id == $rows->subdistrict_id) selected @endif value="{{$row->id}}">{{$row->name_th}}</option>
+                                                            @endforeach
                                                         </select>
                                                     </div>
                                                     <div class="form-group col-md-2">
                                                         <label for="position">รหัสไปรษณีย์(TH)</label>
-                                                        <input class="form-control" name="zipcode" id="zipcode" readonly type="text">
+                                                        <input class="form-control" name="zipcode" value="{{$rows->zipcode}}" id="zipcode" readonly type="text">
                                                     </div>
                                                 </div>
                                             </div>
@@ -193,20 +196,19 @@
                                                 <div class="row">
                                                 <div class="form-group col-md-2">
                                                         <label for="position">ที่อยู่(EN)</label>
-                                                        <input class="form-control"name="address_en"  id="address_en" type="text">
+                                                        <input class="form-control"name="address_en" value="{{$rows->address_en}}" id="address_en" type="text">
                                                     </div>
                                                     <div class="form-group col-md-2">
                                                         <label for="position">หมู่(EN)</label>
-                                                        <input class="form-control"name="group_en"  id="group_en" type="text">
+                                                        <input class="form-control"name="group_en" value="{{$rows->group_en}}" id="group_en" type="text">
                                                     </div>
                                                     <div class="form-group col-md-2">
                                                         <label for="position">ถนน(EN)</label>
-                                                        <input class="form-control"name="road_en"  id="road_en" type="text">
-                                                        </select>
+                                                        <input class="form-control"name="road_en" value="{{$rows->road_en}}" id="road_en" type="text">
                                                     </div>
                                                     <div class="form-group col-md-2">
                                                         <label for="position">ซอย(EN)</label>
-                                                        <input class="form-control" type="text" id="alley_en" name="alley_en">
+                                                        <input class="form-control" type="text" value="{{$rows->alley_en}}" id="alley_en" name="alley_en">
                                                     </div>
                                                     
                                                 </div>
@@ -218,20 +220,20 @@
                                                 <div class="row">
                                                     <div class="form-group col-md-2">
                                                         <label>จังหวัด(EN)</label>
-                                                        <input class="form-control"  type="text" id="province_en" name="province_en" readonly>
+                                                        <input class="form-control" value="{{$rowP->name_en}}" type="text" id="province_en" name="province_en" readonly>
                                                     </div>
                                                     <div class="form-group col-md-2">
                                                         <label for="district">อำเภอ(EN)</label>
-                                                        <input class="form-control"  type="text" id="district_en" name="district_en" readonly>
+                                                        <input class="form-control" value="{{$rowD->name_en}}" type="text" id="district_en" name="district_en" readonly>
                                                         <!-- <div id="fetch_amphure"></div> -->
                                                     </div>
                                                     <div class="form-group col-md-2">
                                                         <label for="subdistrict">ตำบล(EN)</label>
-                                                        <input class="form-control"  type="text" id="subdistrict_en" name="subdistrict_en" readonly>
+                                                        <input class="form-control" value="{{$rowSD->name_en}}" type="text" id="subdistrict_en" name="subdistrict_en" readonly>
                                                     </div>
                                                     <div class="form-group col-md-2">
                                                         <label for="position">รหัสไปรษณีย์(EN)</label>
-                                                        <input class="form-control" name="zipcode_en" id="zipcode_en" readonly type="text">
+                                                        <input class="form-control" name="zipcode_en" value="{{$rows->zipcode}}" id="zipcode_en" readonly type="text">
                                                     </div>
                                                 </div>
                                             </div>
@@ -242,239 +244,124 @@
                                                 <div class="row">
                                                     <div class="form-group col-md-3">
                                                         <label for="position">เบอร์โทร</label>
-                                                        <input class="form-control"name="tel_number"  id="tel_number" type="number">
-                                                    </div>
-                                                    <div class="form-group col-md-3">
-                                                        <label for="position">E-mail</label>
-                                                        <input class="form-control"name="email"  id="email" type="email">
+                                                        <input class="form-control"name="tel_number" value="{{$rows->tel_number}}" id="tel_number" type="text">
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
 
                                         <hr>
-                                        <h4>ข้อมูลสถานที่ทำงานของคนงานต่างด้าว</h4>
-                                        <hr>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="row">
-                                                    <div class="form-group col-md-8">
-                                                        <label for="position">กิจการ</label>
-                                                        <input class="form-control"name="business"  id="business" type="text">
-                                                        
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="row">
-                                                    <div class="form-group col-md-8">
-                                                        <label for="position">ตำแหน่งงาน</label>
-                                                        <input class="form-control"name="position"  id="position" type="text">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
                                         
                                         <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="row">
-                                                    <div class="form-group col-md-6">
-                                                        <input type="radio" value="1" name="workplace_type" id="workplace_type"> 
-                                                        <label for="position">ที่เดียวกับที่ตั้งที่อยู่ของนายจ้าง</label>   
-                                                        <input type="radio" value="0" checked name="workplace_type" id="workplace_type"> 
-                                                        <label for="position">อื่นๆ</label>   
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            <h4>ที่อยู่สถานประกอบการ</h4>
                                         </div>
-
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="row">
                                                 <div class="form-group col-md-2">
                                                         <label for="position">ที่อยู่(TH)</label>
-                                                        <input class="form-control"type="text" name="workplace_address"  id="workplace_address"> 
+                                                        <input class="form-control"name="w_address_th"  id="w_address_th" type="text" value="{{$rows->w_address_th}}">
                                                     </div>
                                                     <div class="form-group col-md-2">
                                                         <label for="position">หมู่(TH)</label>
-                                                        <input class="form-control"type="text" name="workplace_group"  id="workplace_group"> 
+                                                        <input class="form-control"name="w_group"  id="w_group" type="text" value="{{$rows->w_group}}">
                                                     </div>
                                                     <div class="form-group col-md-2">
                                                         <label for="position">ถนน(TH)</label>
-                                                        <input class="form-control"type="text" name="workplace_road"  id="workplace_road"> 
-                                                    </div>
-                                                    @php
-                                                    ///print_r($rows_province);
-                                                    @endphp
-                                                    <div class="form-group col-md-2">
-                                                        <label for="position">จังหวัด(TH)</label>
-                                                        <select name="workplace_province" id="workplace_province" class="form-control">
-                                                            <option value="">เลือกจังหวัด</option>
-                                                                @foreach(@$rows_province as $rowP){ 
-                                                                    <option value="{{$rowP->id}}">{{$rowP->name_th}}</option>
-                                                                @endforeach
+                                                        <input class="form-control"name="w_road_th"  id="w_road_th" type="text" value="{{$rows->w_road_th}}">
                                                         </select>
+                                                    </div>
+                                                    <div class="form-group col-md-2">
+                                                        <label for="position">ซอย(TH)</label>
+                                                        <input class="form-control" type="text" id="w_alley_th" name="w_alley_th" value="{{$rows->w_alley_th}}">
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="row">
-                                                <div class="form-group col-md-2">
-                                                        <label for="position">อำเภอ(TH)</label>
-                                                        <select name="workplace_district" class="form-control" id="workplace_district">
-                                                            <option value="">เลือกอำเภอ</option>
+                                                    <div class="form-group col-md-2">
+                                                        <label>จังหวัด(TH)</label>
+                                                        <select name="w_province" id="w_province" class="form-control">
+                                                            <option value="">เลือกจังหวัด</option>
+                                                                @foreach($rowsP as $row)
+                                                                    <option @if($row->id == $rows->w_province) selected @endif value="{{$row->id}}">{{$row->name_th}}</option>
+                                                                @endforeach
                                                         </select>
                                                     </div>
                                                     <div class="form-group col-md-2">
-                                                        <label for="position">ตำบล(TH)</label></label>
-                                                        <select name="workplace_subdistrict" class="form-control" id="workplace_subdistrict">
-                                                            <option value="">เลือกตำบล</option>
+                                                        <label for="district">อำเภอ(TH)</label>
+                                                        <select name="w_district" id="w_district" class="form-control">
+                                                                @foreach($rowsD as $row)
+                                                                    <option @if($row->id == $rows->w_district) selected @endif value="{{$row->id}}">{{$row->name_th}}</option>
+                                                                @endforeach
+                                                        </select>
+                                                        <!-- <div id="fetch_amphure"></div> -->
+                                                    </div>
+                                                    <div class="form-group col-md-2">
+                                                        <label for="subdistrict">ตำบล(TH)</label>
+                                                        <select name="w_subdistrict" id="w_subdistrict" class="form-control">
+                                                                @foreach($rowsSD as $row)
+                                                                    <option @if($row->id == $rows->w_subdistrict) selected @endif value="{{$row->id}}">{{$row->name_th}}</option>
+                                                                @endforeach
                                                         </select>
                                                     </div>
                                                     <div class="form-group col-md-2">
                                                         <label for="position">รหัสไปรษณีย์(TH)</label>
-                                                        <input class="form-control" name="workplace_zipcode" id="workplace_zipcode" type="number">
+                                                        <input class="form-control" name="w_zipcode" id="w_zipcode" readonly type="text" value="{{$rows->w_zipcode}}">
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="row">
-                                                    <div class="form-group col-md-2">
-                                                        <label for="position">ที่อยู่(EN)</label>
-                                                        <input class="form-control"type="text" name="workplace_address_en"  id="workplace_address_en"> 
-                                                    </div>
-                                                    <div class="form-group col-md-2">
-                                                        <label for="position">หมู่(EN)</label>
-                                                        <input class="form-control"type="text" name="workplace_group_en"  id="workplace_group_en"> 
-                                                    </div>
-                                                    <div class="form-group col-md-2">
-                                                        <label for="position">ถนน(EN)</label>
-                                                        <input class="form-control"type="text" name="workplace_road_en"  id="workplace_road_en"> 
-                                                    </div>
-                                                    <div class="form-group col-md-2">
-                                                        <label for="position">จังหวัด(EN)</label>
-                                                        <input class="form-control"  type="text" id="workplace_province_en" name="workplace_province_en">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
+                                        
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="row">
                                                 <div class="form-group col-md-2">
-                                                        <label for="position">อำเภอ(EN)</label>
-                                                        <input class="form-control"  type="text" id="workplace_district_en" name="workplace_district_en" readonly>
+                                                        <label for="position">ที่อยู่(EN)</label>
+                                                        <input class="form-control"name="w_address_en"  id="w_address_en" type="text"value="{{$rows->w_address_en}}">
                                                     </div>
                                                     <div class="form-group col-md-2">
-                                                        <label for="position">ตำบล(EN)</label></label>
-                                                        <input class="form-control"  type="text" id="workplace_subdistrict_en" name="workplace_subdistrict_en" readonly>
+                                                        <label for="position">หมู่(EN)</label>
+                                                        <input class="form-control"name="w_group_en"  id="w_group_en" type="text"value="{{$rows->w_group}}">
+                                                    </div>
+                                                    <div class="form-group col-md-2">
+                                                        <label for="position">ถนน(EN)</label>
+                                                        <input class="form-control"name="w_road_en"  id="w_road_en" type="text"value="{{$rows->w_road_en}}">
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group col-md-2">
+                                                        <label for="position">ซอย(EN)</label>
+                                                        <input class="form-control" type="text" id="w_alley_en" name="w_alley_en"value="{{$rows->w_alley_en}}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="row">
+                                                    <div class="form-group col-md-2">
+                                                        <label>จังหวัด(EN)</label>
+                                                        <input class="form-control"  type="text" id="w_province_en" name="w_province_en" readonly value="{{$rowWP->name_en}}">
+                                                    </div>
+                                                    <div class="form-group col-md-2">
+                                                        <label for="district">อำเภอ(EN)</label>
+                                                        <input class="form-control"  type="text" id="w_district_en" name="w_district_en" readonly value="{{$rowWD->name_en}}">
+                                                    </div>
+                                                    <div class="form-group col-md-2">
+                                                        <label for="subdistrict">ตำบล(EN)</label>
+                                                        <input class="form-control"  type="text" id="w_subdistrict_en" name="w_subdistrict_en" readonly value="{{$rowWSD->name_en}}">
                                                     </div>
                                                     <div class="form-group col-md-2">
                                                         <label for="position">รหัสไปรษณีย์(EN)</label>
-                                                        <input class="form-control"  type="number" id="workplace_zipcode_en" name="workplace_zipcode_en" readonly>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <hr>
-
-                                        <h4>ข้อมูลหนังสือเดินทาง</h4>
-                                        <hr>
-                                        
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="row">
-                                                    <div class="form-group col-md-6">
-                                                        <label for="position">ประเภทหนังสือเดินทาง</label>   
-                                                        <input type="radio" checked name="passport_type" id="passport_type"> 
-                                                        <label for="position">ไม่มีหนังสือเดินทาง</label>   
-                                                        <input type="radio" name="passport_type" id="passport_type"> 
-                                                        <label for="position">PASSPORT</label> 
-                                                        <input type="radio" name="passport_type" id="passport_type"> 
-                                                        <label for="position">BorderPass</label> 
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="row">
-                                                    <div class="form-group col-md-8">
-                                                        <label for="position">เลขหนังสือเดินทาง</label>
-                                                        <input class="form-control"type="text" name="passport_number"  id="passport_number"> 
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                            <div class="row">
-                                                    <div class="form-group col-md-4">
-                                                        <label for="position">สถานที่ออกหนังสือเดินทาง</label>
-                                                        <input class="form-control"type="text" name="passport_place"  id="passport_place"> 
-                                                    </div>
-                                                    <div class="form-group col-md-4">
-                                                        <label for="position">ประเทศที่ออก</label>
-                                                        <input class="form-control"type="text" name="passport_country"  id="passport_country"> 
+                                                        <input class="form-control" name="w_zipcode_en" id="w_zipcode_en" readonly type="text"  value="{{$rows->w_zipcode}}">
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                         
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                            <div class="row">
-                                                    <div class="form-group col-md-4">
-                                                        <label for="position">วันที่ออกหนังสือเดินทาง</label>
-                                                        <input class="form-control"type="date" name="passport_create"  id="passport_create"> 
-                                                    </div>
-                                                    <div class="form-group col-md-4">
-                                                        <label for="position">วันหมดอายุหนังสือเดินทาง</label>
-                                                        <input class="form-control"type="date" name="passport_expire"  id="passport_expire"> 
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        
-
-                                        <h4>ข้อมูลใบอนุญาติทำงาน</h4>
-                                        <hr>
-                                        
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="row">
-                                                    <div class="form-group col-md-8">
-                                                        <label for="position">เลขที่ใบอนุญาติทำงาน</label>
-                                                        <input class="form-control"type="number" name="permit_number"  id="permit_number"> 
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                            <div class="row">
-                                                    <div class="form-group col-md-4">
-                                                        <label for="position">วันที่ออกใบอนุญาติทำงาน</label>
-                                                        <input class="form-control"type="date" name="permit_create"  id="permit_create"> 
-                                                    </div>
-                                                    <div class="form-group col-md-4">
-                                                        <label for="position">วันหมดอายุใบอนุญาติทำงาน</label>
-                                                        <input class="form-control"type="text" name="permit_expire"  id="permit_expire"> 
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>                                       
-                        
                                         <hr>
                                         <div class="form-group">
                                             <input type="text" hidden value="{{$rows->id}}" name="id" id="id">

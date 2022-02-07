@@ -104,7 +104,7 @@ $(function () {
             {data: 'name_th',    title :'ชื่อนายจ้าง',    className: 'text-center w30'}, //2
             {data: 'tel_number',    title :'เบอร์โทร',    className: 'text-center w30'}, //3
             {data: 'name_th',    title :'ชื่อคนงาน',    className: 'text-center w30'}, //4
-            {data: 'business',    title :'กิจการ',    className: 'text-center w30'}, //4
+            {data: 'passport_number',    title :'เลขพาส',    className: 'text-center w30'}, //4
             {data: 'type',    title :'รายการ',    className: 'text-center w30'}, //5
             {data: 'id',    title :'',    className: 'text-center w20'}, //5
         ],

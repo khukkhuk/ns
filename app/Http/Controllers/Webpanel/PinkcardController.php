@@ -24,6 +24,8 @@ use App\Models\Backend\pinkcard;
 use App\Models\Backend\Provinces;
 use App\Models\Backend\District;
 use App\Models\Backend\SubDistrict;
+use Intervention\Image\ImageManagerStatic as Image;
+use Illuminate\Support\Facades\Storage;
 
 
 class PinkcardController extends Controller
@@ -42,7 +44,8 @@ class PinkcardController extends Controller
         ->leftjoin('users','title_data.created_by',"=","users.id")
         ->where('title_data.received_by','=',null)
         ->where('title_data.type','=','pinkcard')
-        ->select('*','title_data.created as title_created','employee_data.name as em_name','employee_data.surname as em_surname','employer_data.tel_number as tel','title_data.id as title_id')
+        ->where('title_data.delete_status','=','off')
+        ->select('*','title_data.created as title_created','employee_data.name_th as em_name','employee_data.surname_th as em_surname','employer_data.tel_number as tel','title_data.id as title_id')
         ->when($like, function($query) use ($like){
             if(@$like['name'] != "")
             {
@@ -76,7 +79,8 @@ class PinkcardController extends Controller
         ->leftjoin('healthy','title_data.id',"=","healthy.title_id")
         ->where('title_data.received_by','=',null)
         ->where('title_data.type','=','pinkcard')
-        ->select('*','title_data.created as title_created','employee_data.name as em_name','employee_data.surname as em_surname','employer_data.tel_number as tel','title_data.id as title_id')
+        ->where('title_data.delete_status','=','off')
+        ->select('*','title_data.created as title_created','employee_data.name_th as em_name','employee_data.surname_th as em_surname','employer_data.tel_number as tel','title_data.id as title_id')
         ->when($like, function($query) use ($like){
             if(@$like['name'] != "")
             {
@@ -110,7 +114,8 @@ class PinkcardController extends Controller
         ->leftjoin('visa','title_data.id',"=","visa.title_id")
         ->where('title_data.received_by','=',null)
         ->where('title_data.type','=','pinkcard')
-        ->select('*','visa.status as visa_status','visa.notes as visa_note','title_data.created as title_created','employee_data.name as em_name','employee_data.surname as em_surname','employer_data.tel_number as tel','title_data.id as title_id')
+        ->where('title_data.delete_status','=','off')
+        ->select('*','visa.status as visa_status','visa.notes as visa_note','title_data.created as title_created','employee_data.name_th as em_name','employee_data.surname_th as em_surname','employer_data.tel_number as tel','title_data.id as title_id')
         ->when($like, function($query) use ($like){
             if(@$like['name'] != "")
             {
@@ -144,7 +149,8 @@ class PinkcardController extends Controller
         ->leftjoin('visa','title_data.id',"=","visa.title_id")
         ->where('title_data.received_by','=',null)
         ->where('title_data.type','=','pinkcard')
-        ->select('*','visa.status as visa_status','visa.notes as visa_note','title_data.created as title_created','employee_data.name as em_name','employee_data.surname as em_surname','employer_data.tel_number as tel','title_data.id as title_id')
+        ->where('title_data.delete_status','=','off')
+        ->select('*','visa.status as visa_status','visa.notes as visa_note','title_data.created as title_created','employee_data.name_th as em_name','employee_data.surname_th as em_surname','employer_data.tel_number as tel','title_data.id as title_id')
         ->when($like, function($query) use ($like){
             if(@$like['name'] != "")
             {
@@ -171,6 +177,12 @@ class PinkcardController extends Controller
     public function datatable_nationalproof(Request $request)
     {
         $like = $request->Like;
+        $data = title_data::where('received_by','=',null)
+        ->where('type','=','pinkcard')
+        ->where('delete_status','=','off')->get();
+        // dd($data);
+
+
         $sTable = title_data::leftjoin('employer_data','title_data.employer_id','=','employer_data.id')
         ->leftjoin('employee_data','title_data.employee_id','=','employee_data.id')
         ->leftjoin('follower_data','follower_data.employee_id','=','employee_data.id')
@@ -178,7 +190,8 @@ class PinkcardController extends Controller
         ->leftjoin('nationalproof','title_data.id',"=","nationalproof.title_id")
         ->where('title_data.received_by','=',null)
         ->where('title_data.type','=','pinkcard')
-        ->select('*','nationalproof.status as nationalproof_status','nationalproof.notes as nationalproof_note','title_data.created as title_created','employee_data.name as em_name','employee_data.surname as em_surname','employer_data.tel_number as tel','title_data.id as title_id')
+        ->where('title_data.delete_status','=','off')
+        ->select('*','nationalproof.status as nationalproof_status','nationalproof.notes as nationalproof_note','title_data.created as title_created','employee_data.name_th as em_name','employee_data.surname_th as em_surname','employer_data.tel_number as tel','title_data.id as title_id')
         ->when($like, function($query) use ($like){
             if(@$like['name'] != "")
             {
@@ -212,7 +225,8 @@ class PinkcardController extends Controller
         ->leftjoin('pinkcard','title_data.id',"=","pinkcard.title_id")
         ->where('title_data.received_by','=',null)
         ->where('title_data.type','=','pinkcard')
-        ->select('*','pinkcard.status as pinkcard_status','pinkcard.notes as pinkcard_note','title_data.created as title_created','employee_data.name as em_name','employee_data.surname as em_surname','employer_data.tel_number as tel','title_data.id as title_id')
+        ->where('title_data.delete_status','=','off')
+        ->select('*','pinkcard.status as pinkcard_status','pinkcard.notes as pinkcard_note','title_data.created as title_created','employee_data.name_th as em_name','employee_data.surname_th as em_surname','employer_data.tel_number as tel','title_data.id as title_id')
         ->when($like, function($query) use ($like){
             if(@$like['name'] != "")
             {
@@ -267,151 +281,19 @@ class PinkcardController extends Controller
         ]);
         
     }
+    
     public function insert(Request $request)
     {
-        return $this->store_system($request,$id=NULL);
+        $Store = app(\App\Http\Controllers\Webpanel\StoreController::class);
+        return $Store->store_system($request,$id=Null);
     }
 
     public function update(Request $request, $id=null)
     {
-        return $this->store_system($request,$id);
+        $Store = app(\App\Http\Controllers\Webpanel\StoreController::class);
+        return $Store->store_system($request,$id=Null);
     }
 
-    public function store_system($request, $id=null)
-    {    
-        \DB::beginTransaction();
-        try
-        {   
-            // dd($id);
-            if($id==null){
-                $data = new title_data;        
-                $data->created = date('Y-m-d H:i:s');
-                $data->delete_status = "off";
-                $data->created_by=  Auth::guard()->id();
-                $dataEmployee = new employee_data;
-                $dataEmployer = new employer_data;
-                $data->type_name = $request->select_type;
-                $data->country = $request->select_country;
-                $employer_id = employer_data::orderby('id','DESC')->first();
-                $employee_id = employee_data::orderby('id','DESC')->first();
-                // $employer = 0;
-                $data->employer_id = $employer_id->id + 1;
-                $data->employee_id = $employee_id->id + 1;
-                $data->type = 'pinkcard';
-                
-                $dataEmployee->workplace_province_id = $request->e_province_id;
-                $dataEmployee->workplace_district_id = $request->e_district_id;
-                $dataEmployee->workplace_subdistrict_id = $request->e_subdistrict_id;
-            }
-            else{
-                $data = title_data::find($id);
-                $data->updated = date('Y-m-d H:i:s');
-                if($request->notes!=null){
-                    $data->notes = $request->notes;
-                }
-                $dataEmployer = employer_data::find($request->employer_id);
-                $dataEmployee = employee_data::find($request->employee_id);
-                // dd($dataEmployee);
-                
-                $dataEmployee->workplace_province_id = $request->workplace_province_id_edit;
-                $dataEmployee->workplace_district_id = $request->workplace_district_id_edit;
-                $dataEmployee->workplace_subdistrict_id = $request->workplace_subdistrict_id_edit;
-            }
-
-                // dd($dataEmployer);
-                $dataEmployer->type = $request->type;
-                $dataEmployer->id_card = $request->id_card;
-                $dataEmployer->legal_number = $request->legal_number;
-                $dataEmployer->company_name = $request->company_name;
-                $dataEmployer->prefix_th = $request->prefix_th;
-                $dataEmployer->name_th = $request->name_th;
-                $dataEmployer->surname_th = $request->surname_th;
-                $dataEmployer->nickname_th = $request->nickname_th;
-                $dataEmployer->prefix_en = $request->prefix_en;
-                $dataEmployer->name_en = $request->name_en;
-                $dataEmployer->surname_en = $request->surname_en;
-                $dataEmployer->nickname_en = $request->nickname_en;
-                $dataEmployer->address_th = $request->address_th;
-                $dataEmployer->group_th = $request->group_th;
-                $dataEmployer->alley_th = $request->alley_th;
-                $dataEmployer->road_th =  $request->road_th;
-                $dataEmployer->address_en = $request->address_en;
-                $dataEmployer->group_en = $request->group_en;
-                $dataEmployer->alley_en = $request->alley_en;
-                $dataEmployer->road_en = $request->road_en;
-                $dataEmployer->province_id = $request->province;
-                $dataEmployer->district_id = $request->district;
-                $dataEmployer->subdistrict_id = $request->subdistrict;
-                $dataEmployer->zipcode = $request->zipcode;
-                $dataEmployer->tel_number = $request->tel_number;
-                $dataEmployer->email = $request->email;
-                $dataEmployer->employer_id = $request->employer_id;
-
-                $dataEmployee->prefix = $request->prefix;
-                $dataEmployee->name = $request->name;
-                $dataEmployee->surname = $request->surname;
-                $dataEmployee->gender = $request->gender;
-                $dataEmployee->b_date = $request->b_date;
-                $dataEmployee->age = $request->age;
-                $dataEmployee->b_place = $request->b_place;
-                $dataEmployee->tel_number = $request->e_tel_number;
-                $dataEmployee->couple_status = $request->couple_status;
-                $dataEmployee->business = $request->business;
-                $dataEmployee->position = $request->e_position;
-                $dataEmployee->workplace_type = $request->workplace_type;
-                $dataEmployee->workplace_address_th = $request->e_address_th;
-                $dataEmployee->workplace_group_th = $request->e_group_th;
-                $dataEmployee->workplace_road_th = $request->e_road_th;
-                $dataEmployee->workplace_address_en = $request->e_address_en;
-                $dataEmployee->workplace_group_en = $request->e_group_en;
-                $dataEmployee->workplace_road_en = $request->e_road_en;
-                $dataEmployee->workplace_zipcode = $request->w_zipcode;
-                
-
-                $dataEmployee->f_prefix = $request->f_prefix;
-                $dataEmployee->f_name = $request->f_name;
-                $dataEmployee->f_surname = $request->f_surname;
-                $dataEmployee->m_prefix = $request->m_prefix;
-                $dataEmployee->m_name = $request->m_name;
-                $dataEmployee->m_surname = $request->m_surname;
-                $dataEmployee->passport_type = $request->passport_type;
-                $dataEmployee->passport_number = $request->passport_number;
-                $dataEmployee->passport_place = $request->passport_place;
-                $dataEmployee->passport_country = $request->passport_country;
-                $dataEmployee->passport_create = $request->passport_create;
-                $dataEmployee->passport_expire = $request->passport_expire;
-                $dataEmployee->permit_number = $request->permit_number;
-                $dataEmployee->permit_create = $request->permit_create;
-                $dataEmployee->permit_expire = $request->permit_expire;
-                $dataEmployee->workplace_zipcode = $request->ezipcode;
-                $dataEmployee->employee_id = $request->employee_id;
-                
-    
-                
-                // $dataFollower->prefix = $request->prefix;
-                // $dataFollower->name = $request->name;
-                // $dataFollower->surname = $request->surname;
-                // $dataFollower->employee_id = $request->employee_id;
-
-            if(($data->save())&&($dataEmployer->save())&&($dataEmployee->save())){
-            // if(($dataEmployer->save())&&($dataEmployee->save())){
-                \DB::commit();
-                return view("$this->prefix.alert.success",['url'=> url("$this->segment/$this->folder")]);
-            }else{
-                return view("$this->prefix.alert.error",['url'=> url("$this->segment/$this->folder/add")]);
-            }
-        }
-        catch(\Exception $e)
-        {
-            \DB::rollback();
-            $error_log = $e->getMessage();
-            $error_line = $e->getLine();
-            $type_status = 'error';
-            $error_url = url()->current();
-            echo $error_log." ".$error_line." ".$error_url;
-        }
-    }
-    
     public function edit(Request $request,$id)
     {
         
@@ -421,7 +303,7 @@ class PinkcardController extends Controller
         
         $resultr = employer_data::where("id","=",$employer_id)->first();
         $resulte = employee_data::where("id","=",$employee_id)->first();
-        // $data = employer_data::find($row->employer_id);
+        // $data = employer_data::find($employer_id);
         // dd($data);
         $ajax = app(\App\Http\Controllers\Frontend\AjaxController::class);
         return view("$this->prefix.pages.$this->folder.index",[
@@ -433,7 +315,7 @@ class PinkcardController extends Controller
             'folder' => $this->folder,
             'segment' => $this->segment,
             'page' => 'edit',
-            'row' => title_data::find($id),
+            'rowD' => title_data::find($id),
             'rowr' => employer_data::find($row->employer_id),
             'rowe' => employee_data::find($row->employee_id),
             'province'=> Provinces::get(),
@@ -614,7 +496,144 @@ class PinkcardController extends Controller
             'page' => 'nationlity_proof',
            
         ]);
-        
     }
+    public function employer(Request $request,$id)
+    {
+        $title = title_data::find($id);
+        $rows = employer_data::find($title->employer_id);
+        $rowP = Provinces::find($rows->province_id);
+        $rowD = District::find($rows->district_id);
+        $rowSD = SubDistrict::find($rows->subdistrict_id);
+        $rowsP = Provinces::get();
+        $rowsD = District::get();
+        $rowsSD = SubDistrict::get();
+        return view("$this->prefix.pages.$this->folder.index",[
+            'js' => [
+                ["type"=>"text/javascript","src"=>"backend/build/backend/customer.js"],
+                ["src"=>'backend/js/sweetalert2.all.min.js'],
+            ],
+            'prefix' => $this->prefix,
+            'folder' => $this->folder,
+            'segment' => $this->segment,
+            'page' => 'employer',
+            'rows' => $rows,
+            'rowsP' => $rowsP,
+            'rowsD' => $rowsD,
+            'rowsSD' => $rowsSD,
+            'rowP' => $rowP,
+            'rowD' => $rowD,
+            'rowSD' => $rowSD,
+            'rows_province' => Provinces::orderby('id','desc')->get(),
+        ]);
 
+    }
+    public function employee(Request $request,$id)
+    {
+        $title = title_data::find($id);
+        $row = employee_data::find($title->employee_id);
+        $rowsP = Provinces::get();
+        $rowP = Provinces::find($row->province_id);
+        $rowD = District::find($row->district_id);
+        $rowSD = SubDistrict::find($row->subdistrict_id);
+        return view("$this->prefix.pages.$this->folder.index",[
+            'js' => [
+                ["type"=>"text/javascript","src"=>"backend/build/backend/employee.js"],
+                ["src"=>'backend/js/sweetalert2.all.min.js'],
+            ],
+            'prefix' => $this->prefix,
+            'folder' => $this->folder,
+            'segment' => $this->segment,
+            'page' => 'employee',
+            'id' => $id,
+            'rows' => $row,
+            'rowsP' => $rowsP,
+            'rowP' => $rowP,
+            'rowD' => $rowD,
+            'rowSD' => $rowSD,
+        ]);
+    }
+    public function follower(Request $request,$id)
+    {
+        $title = title_data::find($id);
+        $rows = follower_data::where("employee_id",$title->employee_id)->get();
+        return view("$this->prefix.pages.$this->folder.index",[
+            'js' => [
+                ["type"=>"text/javascript","src"=>"backend/build/backend/pinkcard.js"],
+                ["src"=>'backend/js/sweetalert2.all.min.js'],
+            ],
+            'prefix' => $this->prefix,
+            'folder' => $this->folder,
+            'segment' => $this->segment,
+            'page' => 'follower',
+            'rows' => $rows,
+            'employee_id' => $title->employee_id,
+            'employer_id' => $id,
+        ]);
+    }
+    public function update_employer(Request $request,$id){
+        $Store = app(\App\Http\Controllers\Webpanel\StoreController::class);
+        return $Store->update($request,$id,"employer");
+    }
+    public function update_employee(Request $request,$id){
+        $Store = app(\App\Http\Controllers\Webpanel\StoreController::class);
+        return $Store->update($request,$id,"employee");
+    }
+    public function update_follower(Request $request,$id){
+        $Store = app(\App\Http\Controllers\Webpanel\StoreController::class);
+        return $Store->update($request,$id,"follower");
+    }
+    public function store_follower(Request $request){
+        
+        \DB::beginTransaction();
+        try
+        {   
+            // dd($request);
+            if(!$request->follower_id){
+                $data = new follower_data;
+                $data->created = date('Y-m-d H:i:s');
+            }else{
+                $data = follower_data::find($request->follower_id);
+                $data->updated = date('Y-m-d H:i:s');
+            }
+            $data->prefix = $request->prefix;
+            $data->name_th = $request->name_th;
+            $data->surname_th = $request->surname_th;
+            $data->name_en = $request->name_en;
+            $data->surname_en = $request->surname_en;
+            $data->age = $request->age;
+            $data->b_date = $request->b_date;
+            $data->employee_id = $request->employee_id;
+            // dd($request);
+            if($request->image){
+                $file = $request->image;
+                $new = "img_".date("YmdHis");
+                $filename = $file->getClientOriginalName();
+                $lg = Image::make($file->getRealPath());
+                $height = Image::make($file)->height();
+                $width = Image::make($file)->width();
+                $lg->resize($width, $height)->stream();
+                $newLG = 'uploads/img/'.$new;
+                $store = Storage::disk('public')->put($newLG, $lg);
+                $data->image = $newLG;
+            }
+            if($data->save()){
+                \DB::commit();
+                return view("$this->prefix.alert.success",['url'=> url("$this->segment/$this->folder/follower/".$request->employer_id)]);
+            }
+        }
+        catch(\Exception $e)
+        {
+            \DB::rollback();
+            $error_log = $e->getMessage();
+            $error_line = $e->getLine();
+            $type_status = 'error';
+            $error_url = url()->current();
+            echo $error_log." ".$error_line." ".$error_url;
+        }
+
+    }
+    public function get_follower(Request $request,$id){
+        $data  = follower_data::find($id);
+        return $data;
+    }
 }

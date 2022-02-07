@@ -114,14 +114,10 @@ class FollowerController extends Controller
         \DB::beginTransaction();
         try
         {   
+            // dd($request);
             if($id==null){
-                
-                            
-                            
-                $result = Employee::where('id',$request->employee_id)->get();
-                foreach($result as $row){
-                    $employer_id = $row->employer_id;
-                }
+                $employer_id = Employee::find($request->employee_id)->employer_id;
+                // dd($employer_id);
                 $data = new Follower;        
                 $data->created = date('Y-m-d H:i:s');
                 $data->delete_status = "off";
@@ -130,30 +126,19 @@ class FollowerController extends Controller
             else{
                 $data = Follower::find($id);
                 $data->updated = date('Y-m-d H:i:s');
+                $employer_id = $request->employer_id;
             }
             $filename = 'research_' . date('Y-m-d H:i:s');
-            $file = $request->image;
-            if ($file) 
-            {
-                $lg = Image::make($file->getRealPath());
-                $ext = explode("/", $lg->mime())[1];
-                $height = Image::make($file)->height();
-                $width = Image::make($file)->width();
-                $lg->resize($width, $height)->stream();
-                $newLG = 'uploads/research/' . $filename . '.' . $ext;
-                $store = Storage::disk('public')->put($newLG, $lg);
-                
-                if($store)
-                {
-                    $data->image = $newLG;
-                    // dd($newLG);
-                }
+            if($request->image!=null){
+                $data->image = $this->upload($request->image);
             }
             $data->prefix = $request->prefix;
-            $data->name = $request->name;
-            $data->surname = $request->surname;
-            // dd($request->employer_id);
-            // dd($data);
+            $data->name_th = $request->name_th;
+            $data->surname_th = $request->surname_th;
+            $data->name_en = $request->name_en;
+            $data->surname_en = $request->surname_en;
+            $data->age = $request->age;
+            $data->b_date = $request->b_date;
             if($data->save()){
                 \DB::commit();
                 return view("$this->prefix.alert.success",['url'=> url("$this->segment/employee/index/$employer_id")]);
@@ -220,4 +205,20 @@ class FollowerController extends Controller
         
     }
 
+    public static function upload($file)
+    {
+        if ($file) 
+        {
+            $filename = $file->getClientOriginalName();
+            $lg = Image::make($file->getRealPath());
+            // $ext = explode("/", $lg->mime())[1];
+            $height = Image::make($file)->height();
+            $width = Image::make($file)->width();
+            $lg->resize($width, $height)->stream();
+            $newLG = 'uploads/img/' . $filename;
+            // $newLG = 'uploads/img/' . $filename . '.' . $ext;
+            $store = Storage::disk('public')->put($newLG, $lg);
+            return $newLG;
+        }
+    }
 }

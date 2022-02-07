@@ -36,7 +36,8 @@ textbox = "";
         },
         columns: [
             {data: 'DT_RowIndex',    title :'#',    className: 'text-center w10'}, // 0
-            {data: 'name',    title :'ชื่อ-นามสกุล',    className: 'text-center w70'}, // 1
+            {data: 'image',    title :'รูปภาพ',    className: 'text-center w10'}, // 1
+            {data: 'name_th',    title :'ชื่อ-นามสกุล',    className: 'text-center w70'}, // 1
             {data: 'gender',    title :'เพศ',    className: 'text-center w70'}, //2
             {data: 'age',    title :'อายุ',    className: 'text-center w30'}, //3
             {data: 'tel_number',    title :'เบอร์โทรศัพท์',    className: 'text-center w30'}, //3
@@ -45,24 +46,21 @@ textbox = "";
             {data: 'id', title :'จัดการ', className: 'text-center w30'}, //6
         ],
         rowCallback: function (nRow, aData, dataIndex) {
+            if(aData['image']==null){
+                image = "noimage.jpg"
+                // image = "url(noimage.jpg)"
+            }else{
+                image = aData['image']
+            }
             $('td:eq(1)', nRow).html(''
-            + aData['prefix']+aData['name']+'  '+aData['surname'], 
+            +'<img src="'+image+'" width="100">'
             ).addClass('input');
 
             $('td:eq(2)', nRow).html(''
-            + aData['gender'], 
+            + aData['prefix']+aData['name_th']+'  '+aData['surname_th'], 
             ).addClass('input');
 
-            $('td:eq(3)', nRow).html(''
-            + aData['age'], 
-            ).addClass('input');
-
-            $('td:eq(4)', nRow).html(''
-            + aData['tel_number'], 
-            ).addClass('input');
-
-
-            $('td:eq(5)', nRow).html(''
+            $('td:eq(6)', nRow).html(''
             + aData['created_at'], 
             ).addClass('input');
 
@@ -79,6 +77,7 @@ textbox = "";
     });
     
 });
+// $("#b_date").datepicker("option", "dateFormat", "dd/mm/yy");
 function sub_datatable(id){
     // alert(id);
     // $('#subdata-table').dataTable().fnDestroy();
@@ -115,16 +114,28 @@ function sub_datatable(id){
         },
         columns: [
             {data: 'DT_RowIndex',    title :'#',    className: 'text-center w10'}, // 0
-            {data: 'name',    title :'ชื่อ-นามสกุล',    className: 'text-center w70'}, // 1
-            {data: 'updated',    title :'แก้ไขล่าสุด',    className: 'text-center w30'}, //3
-            {data: 'id', title :'จัดการ', className: 'text-center w30'}, //6
+            {data: 'image',    title :'รูปภาพ',    className: 'text-center w10'}, // 1
+            {data: 'name_th',    title :'ชื่อ-นามสกุล',    className: 'text-center w50'}, // 1
+            {data: 'age',    title :'อายุ',    className: 'text-center w10'}, //3
+            {data: 'updated',    title :'แก้ไขล่าสุด',    className: 'text-center w10'}, //3
+            {data: 'id', title :'จัดการ', className: 'text-center w10'}, //6
         ],
         rowCallback: function (nRow, aData, dataIndex) {
+            if(aData['image']==null){
+                image = "noimage.jpg"
+            }else{
+                image = aData['image']
+            }
+
             $('td:eq(1)', nRow).html(''
-            + aData['prefix']+aData['name']+'  '+aData['surname'], 
+            +'<img src="'+image+'" width="100">'
             ).addClass('input');
 
             $('td:eq(2)', nRow).html(''
+            + aData['prefix']+aData['name_th']+'  '+aData['surname_th'], 
+            ).addClass('input');
+
+            $('td:eq(4)', nRow).html(''
             + aData['updated'].substr(0,10) 
             ).addClass('input');
  
@@ -135,13 +146,35 @@ function sub_datatable(id){
         },
         "bDestroy": true,
     });
-
 }
+
+$("province_old").val()
+$("#image").on('change', function() {
+    var $this = $(this)
+    const input = $this[0];
+    const fileName = $this.val().split("\\").pop();
+    $this.siblings(".custom-file-label").addClass("selected").html(fileName)
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            $('#preview').attr('src', e.target.result).fadeIn('fast');
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
+});
+$("#address_th").change(function(){  
+    $("#address_en").val($(this).val())
+})
+$("#group_th").change(function(){  
+    $("#group_en").val($(this).val())
+})
+
 function cancel(){
     $("#addfollower").empty();
     $("#addbtn").empty();
     num=1;
 }
+
 function addbtn(){
     btn = 
     '</div>'
@@ -313,26 +346,80 @@ $('#subdistrict_id').change(function(){
     }
 ),
 
+$("#b_date").change(function(){
+    $("#age").val(calcAge($(this).val()))
+})
+function calcAge(birth){
 
-$('#workplace_type').change(function(){
+    var dates = birth.split("-");
+    var d = new Date();
+
+    var userday = dates[0];
+    var usermonth = dates[1];
+    var useryear = dates[2];
+
+    var curday = d.getDate();
+    var curmonth = d.getMonth()+1;
+    var curyear = d.getFullYear();
+
+    var age = curyear - useryear;
+
+    if((curmonth < usermonth) || ( (curmonth == usermonth) && curday < userday   )){
+
+        age--;
+
+    }
+
+    return age;
+}
+
+$(".datepicker").datetimepicker({
+    timepicker:false,
+    format:'d-m-Y',  // กำหนดรูปแบบวันที่ ที่ใช้ เป็น 00-00-0000   
+    lang:'en',  // ต้องกำหนดเสมอถ้าใช้ภาษาไทย และ เป็นปี พ.ศ.
+});
+$('#workplace_type').click(function(){
+    console.log("click")
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
         }
     });
-    var workplace = $('#workplace_type').val();
-    if(workplace!=0){
-        
-        $("#workplace_province").val($("#province").val());
-        $("#workplace_district").val($("#district").val());
-        $("#workplace_subdistrict").val($("#subdistrict").val());
-        $("#workplace_zipcode").val($("#zipcode").val());
-
-        $("#workplace_province_en").val($("#province_en").val());
-        $("#workplace_district_en").val($("#district_en").val());
-        $("#workplace_subdistrict_en").val($("#subdistrict_en").val());
-        $("#workplace_zipcode_en").val($("#zipcode_en").val());
-    }    
+    var employer_id = $('#id').val();
+    var _token = $('#_token').val();
+    $.ajax({
+        url:'/ajax/get_w_address/'+employer_id,
+        method:"get",
+        dataType: 'json',
+        data:{
+            'id':employer_id,
+            '_token':_token,
+        },
+        success:function(result)
+        {
+            console.log(result.p_name)
+            $("#address_th").val(result.w_address_th);
+            $("#address_en").val(result.w_address_en);
+            $("#group").val(result.w_group);
+            $("#group_en").val(result.w_group);
+            $("#alley_th").val(result.w_alley_th);
+            $("#alley_en").val(result.w_alley_en);
+            $("#road_th").val(result.w_road_th);
+            $("#road_en").val(result.w_road_en);
+            
+            $("#province").val(result.p_name);
+            $("#province_en").val(result.p_name_en);
+            $("#district").val(result.d_name);
+            $("#district_en").val(result.d_name_en);
+            $("#subdistrict").val(result.s_name);
+            $("#subdistrict_en").val(result.s_name_en)
+            $('#province_id option[value='+result.p_id+']').prop("selected", true)
+            $('#district_id option[value='+result.d_id+']').prop("selected", true)
+            $('#subdistrict_id option[value='+result.s_id+']').prop("selected", true)
+            $("#zipcode").val(result.w_zipcode);
+            $("#zipcode_en").val(result.w_zipcode);
+        }
+    }) 
 })
 function check_add() {
     var role = $('#role').val();
@@ -459,8 +546,7 @@ function destroy(id) {
         title: "ลบข้อมูล", text: "คุณต้องการลบข้อมูลใช่หรือไม่?", icon: "warning", showCancelButton: true, confirmButtonColor: "#DD6B55", showLoaderOnConfirm: true,
         preConfirm: () => {
             return fetch('/webpanel/follower/destroy/'+id)
-                // .then(response => {  Swal.fire('Saved!', '', 'success')})
-                .then(data => location.reload())
+                .then(data=> Swal.fire({title:"success",icon:"success",preConfirm:() => {(location.reload())}}))
                 .catch(error => { Swal.showValidationMessage(`Request failed: ${error}`) })
         }
     });

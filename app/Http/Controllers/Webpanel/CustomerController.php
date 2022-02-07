@@ -130,18 +130,29 @@ class CustomerController extends Controller
             $data->address_th = $request->address_th;
             $data->group_th = $request->group_th;
             $data->road_th =  $request->road_th;
+            $data->alley_th =  $request->alley_th;
+            $data->alley_en =  $request->alley_en;
             $data->address_en = $request->address_en;
             $data->group_en = $request->group_en;
             $data->road_en = $request->road_en;
-            
-            $data->province_id = $request->province_id;
-            $data->district_id = $request->district_id;
-            $data->subdistrict_id = $request->subdistrict_id;
+            $data->province_id = $request->province;
+            $data->district_id = $request->district;
+            $data->subdistrict_id = $request->subdistrict;
             $data->zipcode = $request->zipcode;
-
-            $data->tel_number = $request->tel_number;
-            $data->email = $request->email;
             
+            $data->w_address_th = $request->w_address_th;
+            $data->w_address_en = $request->w_address_en;
+            $data->w_group = $request->w_group;
+            $data->w_road_th =  $request->w_road_th;
+            $data->w_road_en = $request->w_road_en;
+            $data->w_alley_th = $request->w_alley_th;
+            $data->w_alley_en = $request->w_alley_en;
+            $data->w_province = $request->w_province;
+            $data->w_district = $request->w_district;
+            $data->w_subdistrict = $request->w_subdistrict;
+            $data->w_zipcode = $request->w_zipcode;
+
+            $data->tel_number = $request->tel_number;            
             $filename = 'research_' . date('dmY-His');
             $file = $request->image;
             if ($file) 
@@ -160,6 +171,7 @@ class CustomerController extends Controller
                     // dd($newLG);
                 }
             }
+            // dd($request);
             if($data->save()){
                 \DB::commit();
                 return view("$this->prefix.alert.success",['url'=> url("$this->segment/$this->folder")]);
@@ -181,6 +193,16 @@ class CustomerController extends Controller
     }
     public function edit(Request $request,$id)
     {
+        $rows = Employer::find($id);
+        $rowP = Provinces::find($rows->province_id);
+        $rowD = District::find($rows->district_id);
+        $rowSD = SubDistrict::find($rows->subdistrict_id);
+        $rowWP = Provinces::find($rows->w_province);
+        $rowWD = District::find($rows->w_district);
+        $rowWSD = SubDistrict::find($rows->w_subdistrict);
+        $rowsP = Provinces::get();
+        $rowsD = District::get();
+        $rowsSD = SubDistrict::get();
         return view("$this->prefix.pages.$this->folder.index",[
             'js' => [
                 ["type"=>"text/javascript","src"=>"backend/build/backend/customer.js"],
@@ -190,11 +212,17 @@ class CustomerController extends Controller
             'folder' => $this->folder,
             'segment' => $this->segment,
             'page' => 'edit',
-            'rows' => Employer::find($id),
+            'rows' => $rows,
+            'rowsP' => $rowsP,
+            'rowsD' => $rowsD,
+            'rowsSD' => $rowsSD,
+            'rowP' => $rowP,
+            'rowD' => $rowD,
+            'rowSD' => $rowSD,
+            'rowWP' => $rowWP,
+            'rowWD' => $rowWD,
+            'rowWSD' => $rowWSD,
             'rows_province' => Provinces::orderby('id','desc')->get(),
-           
         ]);
-        
     }
-
 }

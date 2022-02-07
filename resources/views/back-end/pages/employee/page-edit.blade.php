@@ -8,7 +8,7 @@
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="{{ url("$segment") }}">หน้าแรก</a></li>
-                        <li class="breadcrumb-item"><a href="{{ url("$segment/customer")}}">ข้อมูลลูกค้า/a></li>
+                        <li class="breadcrumb-item"><a href="{{ url("$segment/customer")}}">ข้อมูลลูกค้า</a></li>
                         <li class="breadcrumb-item"><a href="{{ url("$segment/$folder/index/$id")}}">ข้อมูลแรงงาน</a></li>
                         <li class="breadcrumb-item active">เพิ่มข้อมูลแรงงาน</li>
                     </ol>
@@ -47,75 +47,115 @@
                                             $m_prefix = $rows->m_prefix;
                                             $f_prefix = $rows->f_prefix;
                                             $workplace_type = $rows->workplace_type;
+                                            $passport_type = $rows->passport_type;
                                         @endphp
+                                        <input type="text" hidden id="province_old" value="{{$rows->province_id}}">
+                                        <input type="text" hidden id="district_old" value="{{$rows->district_id}}">
+                                        <input type="text" hidden id="subdistrict_old" value="{{$rows->subdistrict_id}}">
+
                                         
                                         <h4>ข้อมูลหนังสือเดินทาง</h4>
-                                            <a class="btn btn-danger" href="{{url("$segment/$folder/index/$id")}}">ย้อนกลับ</a>
                                         <hr>
                                         <div class="row">
-                                            <div class="col-md-12">
+                                            <div class="col-md-6">
                                                 <div class="row">
-                                                    <div class="form-group col-md-2">
-                                                        <label for="position">คำนำหน้า</label>
-                                                        <select class="form-control" name="prefix" id="prefix">
-                                                            <option value="" hidden>กรุณาเลือก</option>
-                                                            <option checked value="นาย" @if($prefix=='นาย')selected @endif>นาย</option>
-                                                            <option value="นาง" @if($prefix=='นาง') selected @endif >นาง</option>
-                                                            <option value="นางสาว"@if($prefix=='นางสาว')selected @endif>นางสาว</option>
-                                                        </select>
+                                                    <div class="col-md-12">
+                                                        <div class="row">
+                                                            <div class="form-group col-md-3">
+                                                                <label for="position">คำนำหน้า</label>
+                                                                <select class="form-control" name="prefix" id="prefix">
+                                                                    <option value="" hidden>กรุณาเลือก</option>
+                                                                    <option checked value="นาย" @if($prefix=='นาย')selected @endif>นาย</option>
+                                                                    <option value="นาง" @if($prefix=='นาง') selected @endif >นาง</option>
+                                                                    <option value="นางสาว"@if($prefix=='นางสาว')selected @endif>นางสาว</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="form-group col-md-3">
+                                                                <label for="position">ชื่อ</label>
+                                                                <input class="form-control" value="{{$rows->name}}"  name="name" id="name" type="text">
+                                                            </div>
+                                                            <div class="form-group col-md-3">
+                                                                <label for="position">นามสกุล</label>
+                                                                <input class="form-control" value="{{$rows->surname}}"   name="surname" id="surname" type="text">
+                                                            </div>
+                                                            <div class="form-group col-md-3">
+                                                                <label for="position">เพศ</label>
+                                                                <select class="form-control" name="gender" id="gender">
+                                                                    <option value="" hidden>กรุณาเลือก</option>
+                                                                    <option @if($gender=='ชาย')selected @endif value="ชาย">ชาย</option>
+                                                                    <option @if($gender=='หญิง')selected @endif value="หญิง">หญิง</option>
+                                                                    <option @if($gender=='อื่นๆ')selected @endif value="อื่นๆ">อื่นๆ</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                    <div class="form-group col-md-2">
-                                                        <label for="position">ชื่อ</label>
-                                                        <input class="form-control" value="{{$rows->name}}"  name="name" id="name" type="text">
+                                                    
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="row">
+                                                            <div class="form-group col-md-3">
+                                                                <label for="position">วันเดือนปีเกิด</label>
+                                                                <input type="date"  value="{{$rows->b_date}}" class="form-control" name="b_date" id="b_date">
+                                                            </div>
+                                                            <div class="form-group col-md-2">
+                                                                <label for="position">อายุ</label>
+                                                                <input type="number"  value="{{$rows->age}}" class="form-control" name="age" id="age" min="1" max="99">
+                                                            </div>
+                                                            <div class="form-group col-md-4">
+                                                                <label for="position">สถานที่เกิด</label>
+                                                                <input class="form-control" value="{{$rows->b_place}}"  name="b_place" id="b_place" type="text">
+                                                            </div>
+                                                            <div class="form-group col-md-3">
+                                                                <label for="position">เบอร์โทร</label>
+                                                                <input class="form-control" value="{{$rows->tel_number}}"  name="tel_number" id="tel_number" type="text">
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                    <div class="form-group col-md-2">
-                                                        <label for="position">นามสกุล</label>
-                                                        <input class="form-control" value="{{$rows->surname}}"   name="surname" id="surname" type="text">
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="row">
+                                                            <div class="form-group col-md-4">
+                                                                <label for="position">สัญชาติ</label>
+                                                                <input type="text" required class="form-control" name="nationality" id="nationality" value="{{$rows->nationality}}">
+                                                            </div>
+                                                            <div class="form-group col-md-4">
+                                                                <label for="position">เชื้อชาติ</label>
+                                                                <input type="text" required class="form-control" name="race" id="race" value="{{$rows->race}}">
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                    <div class="form-group col-md-2">
-                                                        <label for="position">เพศ</label>
-                                                        <select class="form-control" name="gender" id="gender">
-                                                            <option value="" hidden>กรุณาเลือก</option>
-                                                            <option @if($gender=='ชาย')selected @endif value="ชาย">ชาย</option>
-                                                            <option @if($gender=='หญิง')selected @endif value="หญิง">หญิง</option>
-                                                            <option @if($gender=='อื่นๆ')selected @endif value="อื่นๆ">อื่นๆ</option>
-                                                        </select>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="row">
+                                                            <div class="form-group col-md-8">
+                                                                <label for="position">สถานภาพ</label>
+                                                                <input type="radio" name="couple_status"@if($couple_status=='โสด')checked @endif value="โสด" id="couple_status">โสด
+                                                                <input type="radio" name="couple_status"@if($couple_status=='สมรส')checked @endif value="สมรส" id="couple_status">สมรส
+                                                                <input type="radio" name="couple_status"@if($couple_status=='หย่า')checked @endif value="หย่า" id="couple_status">หย่า
+                                                                <input type="radio" name="couple_status"@if($couple_status=='หม้าย')checked @endif value="หม้าย" id="couple_status">หม้าย
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-12">
+                                            <div class="col-md-6">
                                                 <div class="row">
-                                                    <div class="form-group col-md-2">
-                                                        <label for="position">วันเดือนปีเกิด</label>
-                                                        <input type="date"  value="{{$rows->b_date}}" class="form-control" name="b_date" id="b_date">
-                                                    </div>
-                                                    <div class="form-group col-md-2">
-                                                        <label for="position">อายุ</label>
-                                                        <input type="number"  value="{{$rows->age}}" class="form-control" name="age" id="age" min="1" max="99">
-                                                    </div>
-                                                    <div class="form-group col-md-2">
-                                                        <label for="position">สถานที่เกิด</label>
-                                                        <input class="form-control" value="{{$rows->b_place}}"  name="b_place" id="b_place" type="text">
-                                                    </div>
-                                                    <div class="form-group col-md-2">
-                                                        <label for="position">เบอร์โทร</label>
-                                                        <input class="form-control" value="{{$rows->tel_number}}"  name="tel_number" id="tel_number" type="text">
+                                                    <div class="form-group col-12 col-xs-12 col-md-12 col-xl-12">
+                                                        <h6><span style="color:red;">*</span>รูปภาพ</h6>
+                                                        <img src="@if(@$rows->image == null) {{url("noimage.jpg")}} @endif" class="img-thumbnail" id="preview">
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-md-12">
                                                 <div class="row">
-                                                    <div class="form-group col-md-6">
-                                                        <label for="position">สถานภาพ</label>
-                                                        <input type="radio" name="couple_status"@if($couple_status=='โสด')selected @endif selected value="โสด" id="couple_status">โสด
-                                                        <input type="radio" name="couple_status"@if($couple_status=='สมรส')selected @endif value="สมรส" id="couple_status">สมรส
-                                                        <input type="radio" name="couple_status"@if($couple_status=='หย่า')selected @endif value="หย่า" id="couple_status">หย่า
-                                                        <input type="radio" name="couple_status"@if($couple_status=='หม้าย')selected @endif value="หม้าย" id="couple_status">หม้าย
+                                                    <div class="form-group col-12 col-xs-12 col-md-12 col-xl-12">
+                                                        <small class="help-block">*รองรับไฟล์ <strong class="text-danger">(jpg, jpeg, png)</strong> เท่านั้น</small>
+                                                        <small class="text-danger">Auto Resize </small>
+                                                        <div class="custom-file">
+                                                            <input type="file" class="custom-file-input form-control" name="image" id="image">
+                                                            <label class="custom-file-label" for="image">Choose file</label>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -157,11 +197,11 @@
                                                     </div>
                                                     <div class="form-group col-md-2">
                                                         <label for="position">ชื่อมารดา</label>
-                                                        <input class="form-control" value="{{$rows->f_name}}"  name="m_name" type="text">
+                                                        <input class="form-control" value="{{$rows->m_name}}"  name="m_name" type="text">
                                                     </div>
                                                     <div class="form-group col-md-2">
                                                         <label for="position">นามสกุลมารดา</label>
-                                                        <input class="form-control"  value="{{$rows->f_surname}}" name="m_surname" type="text">
+                                                        <input class="form-control"  value="{{$rows->m_surname}}" name="m_surname" type="text">
                                                     </div>
                                                 </div>
                                             </div>
@@ -196,9 +236,9 @@
                                             <div class="col-md-12">
                                                 <div class="row">
                                                     <div class="form-group col-md-6">
-                                                        <input type="radio" value="1" name="workplace_type"@if($workplace_type=='ที่เดียวกับนายจ้าง')checked @endif  id="workplace_type"> 
+                                                        <input type="radio" value="ที่เดียวกับนายจ้าง" name="workplace_type"@if($workplace_type=='ที่เดียวกับนายจ้าง')checked @endif  id="workplace_type"> 
                                                         <label for="position">ที่เดียวกับที่ตั้งที่อยู่ของนายจ้าง</label>   
-                                                        <input type="radio" value="0" checked name="workplace_type"@if($workplace_type=='อื่นๆ')checked @endif  id="workplace_type"> 
+                                                        <input type="radio" value="อื่นๆ" checked name="workplace_type"@if($workplace_type=='อื่นๆ')checked @endif  id="workplace_type"> 
                                                         <label for="position">อื่นๆ</label>   
                                                     </div>
                                                 </div>
@@ -210,24 +250,19 @@
                                                 <div class="row">
                                                 <div class="form-group col-md-2">
                                                         <label for="position">ที่อยู่(TH)</label>
-                                                        <input class="form-control" value="{{$rows->address}}"  type="text" name="address_th"  id="address_th"> 
+                                                        <input class="form-control" value="{{$rows->address_th}}"  type="text" name="address_th"  id="address_th"> 
                                                     </div>
                                                     <div class="form-group col-md-2">
                                                         <label for="position">หมู่(TH)</label>
-                                                        <input class="form-control"  value="{{$rows->group}}" type="text" name="group_th"  id="group_th"> 
+                                                        <input class="form-control"  value="{{$rows->group_th}}" type="text" name="group_th"  id="group_th"> 
+                                                    </div>
+                                                    <div class="form-group col-md-2">
+                                                        <label for="position">ซอย(TH)</label>
+                                                        <input class="form-control"  type="text" value="{{$rows->alley_th}}" name="alley_th"  id="alley_th"> 
                                                     </div>
                                                     <div class="form-group col-md-2">
                                                         <label for="position">ถนน(TH)</label>
-                                                        <input class="form-control"  type="text" value="{{$rows->road}}" name="road_th"  id="road_th"> 
-                                                    </div>
-                                                    <div class="form-group col-md-2">
-                                                        <label for="position">จังหวัด(TH)</label>
-                                                        <select name="province_id"  id="province_id" class="form-control">
-                                                            <option value="">เลือกจังหวัด</option>
-                                                                @foreach(@$rowsP as $key => $row){
-                                                                    <option value="{{$row->id}}">{{$row->name_th}}</option>
-                                                                @endforeach
-                                                        </select>
+                                                        <input class="form-control"  type="text" value="{{$rows->road_th}}" name="road_th"  id="road_th"> 
                                                     </div>
                                                 </div>
                                             </div>
@@ -236,16 +271,25 @@
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="row">
-                                                <div class="form-group col-md-2">
+                                                    <div class="form-group col-md-2">
+                                                        <label for="position">จังหวัด(TH)</label>
+                                                        <select name="province_id"  id="province_id" class="form-control">
+                                                            <option value="">เลือกจังหวัด</option>
+                                                            @foreach($rowsP as $row)
+                                                                    <option @if($row->id == $rows->province_id) selected @endif value="{{$row->id}}">{{$row->name_th}}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group col-md-2">
                                                         <label for="position">อำเภอ(TH)</label>
                                                         <select name="district_id"  class="form-control" id="district_id">
-                                                            <option value="">เลือกอำเภอ</option>
+                                                                    <option value="{{$rowD->id}}">{{$rowD->name_th}}</option>
                                                         </select>
                                                     </div>
                                                     <div class="form-group col-md-2">
                                                         <label for="position">ตำบล(TH)</label></label>
                                                         <select name="subdistrict_id"  class="form-control" id="subdistrict_id">
-                                                            <option value="">เลือกตำบล</option>
+                                                                    <option value="{{$rowSD->id}}">{{$rowSD->name_th}}</option>
                                                         </select>
                                                     </div>
                                                     <div class="form-group col-md-2">
@@ -268,12 +312,12 @@
                                                         <input class="form-control"  type="text" value="{{$rows->group_en}}" name="group_en"  id="group_en"> 
                                                     </div>
                                                     <div class="form-group col-md-2">
-                                                        <label for="position">ถนน(EN)</label>
-                                                        <input class="form-control  "type="text" value="{{$rows->road_en}}" name="road_en"  id="road_en"> 
+                                                        <label for="position">ซอย(EN)</label>
+                                                        <input class="form-control"  type="text" value="{{$rows->alley_en}}" name="alley_en"  id="alley_en"> 
                                                     </div>
                                                     <div class="form-group col-md-2">
-                                                        <label for="position">จังหวัด(EN)</label>
-                                                        <input class="form-control"  type="text" id="province_en" name="province_en">
+                                                        <label for="position">ถนน(EN)</label>
+                                                        <input class="form-control  "type="text" value="{{$rows->road_en}}" name="road_en"  id="road_en"> 
                                                     </div>
                                                 </div>
                                             </div>
@@ -282,13 +326,17 @@
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="row">
-                                                <div class="form-group col-md-2">
+                                                    <div class="form-group col-md-2">
+                                                        <label for="position">จังหวัด(EN)</label>
+                                                        <input class="form-control"  type="text" value="{{$rowP->name_en}}" id="province_en" name="province_en">
+                                                    </div>
+                                                    <div class="form-group col-md-2">
                                                         <label for="position">อำเภอ(EN)</label>
-                                                        <input class="form-control"  type="text" id="district_en" name="district_en" readonly>
+                                                        <input class="form-control"  type="text" value="{{$rowD->name_en}}" id="district_en" name="district_en" readonly>
                                                     </div>
                                                     <div class="form-group col-md-2">
                                                         <label for="position">ตำบล(EN)</label></label>
-                                                        <input class="form-control"  type="text" id="subdistrict_en" name="subdistrict_en" readonly>
+                                                        <input class="form-control"  type="text" value="{{$rowSD->name_en}}" id="subdistrict_en" name="subdistrict_en" readonly>
                                                     </div>
                                                     <div class="form-group col-md-2">
                                                         <label for="position">รหัสไปรษณีย์(EN)</label>
@@ -309,11 +357,11 @@
                                                     <div class="form-group col-md-6">
                                                         <label for="position">ประเภทหนังสือเดินทาง</label>    
                                                         <label for="position">ไม่มีหนังสือเดินทาง</label>   
-                                                        <input type="radio"  name="passport_type" id="passport_type" value="ไม่มีหนังสือเดินทาง"> 
+                                                        <input type="radio"  @if($passport_type =="ไม่มีหนังสือเดินทาง") checked @endif name="passport_type" id="passport_type" value="ไม่มีหนังสือเดินทาง"> 
                                                         <label for="position">PASSPORT</label> 
-                                                        <input type="radio"  name="passport_type" id="passport_type" value="Passport"> 
+                                                        <input type="radio"  @if($passport_type =="passport") checked @endif name="passport_type" id="passport_type" value="passport"> 
                                                         <label for="position">BorderPass</label> 
-                                                        <input type="radio"  name="passport_type" id="passport_type" value="BorderPass">
+                                                        <input type="radio"  @if($passport_type =="BorderPass") checked @endif name="passport_type" id="passport_type" value="BorderPass">
                                                     </div>
                                                 </div>
                                             </div>
@@ -381,7 +429,7 @@
                                                     </div>
                                                     <div class="form-group col-md-4">
                                                         <label for="position">วันหมดอายุใบอนุญาติทำงาน</label>
-                                                        <input class="form-control"  type="text" value="{{$rows->permit_expire}}" name="permit_expire"  id="permit_expire"> 
+                                                        <input class="form-control"  type="date" value="{{$rows->permit_expire}}" name="permit_expire"  id="permit_expire"> 
                                                     </div>
                                                 </div>
                                             </div>

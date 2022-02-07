@@ -30,7 +30,7 @@
 
 
 <div class="row">
-    <div class="col-12">
+    <div class="col-8">
         <div class="card">
             <div class="card-body">
 
@@ -44,27 +44,19 @@
                                     <div class="col-md-12">
                                         <div class="row">
                                             <div class="form-group col-md-6">
-                                                <label for="position">เลขที่ใบบิลรายาจ่าย</label>
-                                                <input class="form-control" required type="text" name="bill_number"  id="bill_number"> 
-                                            </div>
-                                            <div class="form-group col-md-6">
                                                 <label for="position">วันที่ออกเอกสาร</label>
                                                 <input class="form-control" required type="date" name="bill_date"  id="bill_date"> 
                                             </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="row">
                                             <div class="form-group col-md-6">
-                                                <label for="">ชื่อสถานประกอบการ/ผู้ขาย</label>
-                                                <input class="form-control" required type="text" name="company"  id="company" value="บริษัท เอ็น เอส เลเบอร์ จํากัด691 ถ.ท่าแฉลบ ต.ตลาด อ.เมือง จ.จันทบุรี 22000"> 
-                                            </div>
-                                            <div class="form-group col-md-6">
-                                                <label>Tax ID</label>
-                                                <input type="text" name="tax_id" id="tax_id" class="form-control">
+                                                <label for="">ชื่อนายจ้าง</label>
+                                                <input type="text" hidden id="employee_data">
+                                                <select name="selectemployer" class="selecttype" id="selectemployer" aria-selected="true" hidden>
+                                                    <option value="" hidden>--</option>
+                                                    @foreach($cs_rows as $row)
+                                                    <option value="{{$row->id}}">{{$row->name_th}} {{$row->surname_th}}</option>
+                                                    @endforeach
+                                                </select>
+                                                <input class="form-control" hidden required type="text" name="company"  id="company" value="บริษัท เอ็น เอส เลเบอร์ จํากัด691 ถ.ท่าแฉลบ ต.ตลาด อ.เมือง จ.จันทบุรี 22000"> 
                                             </div>
                                         </div>
                                     </div>
@@ -120,24 +112,30 @@
                                 <table style="width:100%" class="table text-center">
                                     <tr style="background-color:">
                                         <th style="width:5%">จำนวน</th>
-                                        <th style="width:15%">รายการ</th>
-                                        <th style="width:10%">หน่วยละ</th>
-                                        <th style="width:10%">จำนวนเงิน</th>
+                                        <th style="width:10%">รายการ</th>
+                                        <th style="width:10%">เลือกแรงงาน</th>
+                                        <th style="width:5%">หน่วยละ</th>
+                                        <th style="width:5%">จำนวนเงิน</th>
                                     </tr>
                                     <tbody id="table-row">
                                         <tr>
                                             <td><input class="form-control amount" type="number" id="amount1" name="amount1" min="0" max="999"></td>
-                                            <td><input type="text" hidden id="type1" name="type1">
+                                            <td>
+                                                <input type="text" hidden id="type1" name="type1">
                                                 <input type="text" hidden id="type_name1" name="type_name1">
                                                 <input type="text" hidden id="sort_data1" name="sort_data1">
-                                                <select class="form-control selecttype" name="select_type1" id="select_type1">
-                                                    <option value="" hidden>เลือกรายการ</option>
+                                                <select name="select_type1" id="select_type1" class="selecttype" hidden>
                                                     @foreach($rows as $row)
-                                                        <option value="{{$row->id}}">{{$row->type_name}}</option>
+                                                        <option value="{{$row->id}}">{{$row->category}} : {{$row->name}}</option>
                                                     @endforeach
                                                 </select>
+
+
+                                                
+                                                <input hidden type="text" id="data_select2" value='@foreach($rows as $row) <option value="{{$row->id}}">{{$row->category}} : {{$row->name}}</option>@endforeach' >
                                             </td>
-                                            <td><input class="form-control" type="text1" id="cost1"></td>
+                                            <td><select name="employee1" class="selecttype" id="employee1"></select></td>
+                                            <td><input class="form-control" type="text1" id="price1"></td>
                                             <td><input class="form-control" type="text1" id="total_per1"></td>
                                         </tr> 
                                     </tbody>
@@ -166,41 +164,5 @@
     <script src="backend/libs/jquery/jquery.min.js"></script>
     <script type="text/javascript">
         
-// function addbill(){
-//     num = parseInt($("#maxline").val());
-//     $("#maxline").val(num+1);
-//     num = parseInt($("#maxline").val());
-    
-//     data =   '<tr><td><input class="form-control amount" type="number" id="amount'+num+'" name="amount'+num+'"></td>'
-//             +'<td><input type="text" hidden value="" id="type'+num+' name="type'+num+'">'
-//             +'<input type="text" hidden value="" id="type_name'+num+'" name="type_name'+num+'">'
-//             // +'<select class="form-control selecttype" id="select_type'+num+'" name="select_type'+num+'">'+$("#select_type1").html()+'</select></td>'
-//             +'<select class="form-control selecttype" id="select_type'+num+'" name="select_type'+num+'">'+$("#select_type1").html()+'</select></td>'
-//             // +'<select class="select"></select></td>'
-//             +'<td><input class="form-control" type="text" id="cost'+num+'" name="cost'+num+'"></td>'
-//             +'<td><input class="form-control" type="text" id="total_per'+num+'" name="total_per'+num+'"></td></tr>';
-//     $(data).appendTo($("#table-row"));
-// }
-// $(".selecttype").change(function (){
-//     alert("c");
-//     id = $(this).val();
-//     sort = $(this).attr("id").substr(11,15);
-//     $.ajax({ type: 'get', 
-//         url: "webpanel/bill/getdata/"+id,
-//         success: function (res) {
-//             $("#cost"+sort).val(res['cost']);
-//         } 
-//     });
-// })
-// $(".amount").keyup(function(){
-//         id = $(this).attr("id").substr(6,10);
-//         $("#total_per"+id).val(parseInt($(this).val()) * parseInt($("#cost"+id).val()));
-//         total="";
-//         for(line = $("#maxline").val();0<line;line--){
-//             total += parseInt($("#total_per"+line).val());
-//             console.log(total);
-//         }
-//         $("#total").val(total)
-// })
     </script>
 </div>

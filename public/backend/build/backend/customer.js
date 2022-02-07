@@ -72,7 +72,18 @@ $(function () {
         oTable.draw();
     });
 });
-
+$("#type1").click(function(){
+    // console.log("c")
+    alert( $("#type1").val() )
+    $("#id_card").attr("required",true)
+    $("#legal_number").attr("required",false)
+})
+$("#type2").click(function(){
+    // console.log("c")
+    alert( $("#type2").val() )
+    $("#legal_number").attr("required",true)
+    $("#id_card").attr("required",false)
+})
 $('#province').change(function(){
     $.ajaxSetup({
         headers: {
@@ -205,7 +216,152 @@ $('#subdistrict').change(function(){
         }
     }
 ),
+$('#w_province').change(function(){
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    if($(this).val()!=''){
+        var province_id = $(this).val();
+        var _token = $('#_token').val();
+        $('[name="w_zipcode"]').val('');
+        $('[name="w_subdistrict"]').val('กรุณาเลือกตำบล');
+        $.ajax({
+            url:'/ajax/get_distirct',
+            method:"get",
+            dataType: 'html',
+            data:{
+                'id':province_id,
+                '_token':_token,
+            },
+            success:function(result)
+            {   
+                
+                $("#w_district").html(result);
+            }
+        })
+        $.ajax({
+            url:'/ajax/get_province_en',
+            method:"get",
+            dataType: 'html',
+            data:{
+                'id':province_id,
+                '_token':_token,
+            },
+            success:function(result)
+            {
+                $("#w_province_en").val(result);
+            }
+        })
+        }
+    }
+)
 
+
+$('#w_district').change(function(){
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    if($(this).val()!=''){
+
+        var district_id = $(this).val();
+        var _token = $('#_token').val();
+        $.ajax({
+            url:'/ajax/get_subdistirct',
+            method:"get",
+            dataType: 'html',
+            data:{
+                'id':district_id,
+                '_token':_token,
+            },
+            success:function(result){
+                $("#w_subdistrict").html(result);
+            },
+            error: function(xhr, status, error) {
+                alert("error");
+                $("#w_subdistrict").html(xhr.responseText);
+              }
+            
+        })
+        $.ajax({
+            url:'/ajax/get_district_en',
+            method:"get",
+            dataType: 'html',
+            data:{
+                'id':district_id,
+                '_token':_token,
+            },
+            success:function(result)
+            {
+                $("#w_district_en").val(result);
+            }
+        })
+        }
+    }
+),
+
+$('#w_subdistrict').change(function(){
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    if($(this).val()!=''){
+
+        var subdistrict_id = $(this).val();
+        var _token = $('#_token').val();
+        $.ajax({
+            url:'/ajax/get_zipcode',
+            method:"get",
+            dataType: 'json',
+            data:{
+                'id':subdistrict_id,
+                '_token':_token,
+            },
+            success:function(result){
+                $('#w_zipcode').val(result);
+                $('#w_zipcode_en').val(result);
+            },
+            error: function(xhr, status, error) {
+                // alert("error");
+                $('#w_zipcode').val(result);
+                $('#w_zipcode_en').val(result);
+              }
+            
+        })
+        $.ajax({
+            url:'/ajax/get_subdistrict_en',
+            method:"get",
+            dataType: 'html',
+            data:{
+                'id':subdistrict_id,
+                '_token':_token,
+            },
+            success:function(result)
+            {
+                $("#w_subdistrict_en").val(result);
+            }
+        })
+        }
+    }
+),
+$("#address_th").change(function(){  
+    $("#address_en").val($("#address_th").val())
+})
+$("#group_th").change(function(){  
+    $("#group_en").val($(this).val())
+})
+
+$("#w_group").change(function(){  
+    $("#w_group_en").val($(this).val())
+})
+
+$("#w_address_th").change(function(){  
+    $("#w_address_en").val($(this).val())
+})
 
 $('#workplace_type').change(function(){
     $.ajaxSetup({
@@ -279,8 +435,6 @@ function check_edit() {
         return false;
     }
 }
-
-
 //== Script Ajax Regular ==
 $('#resetpassword').change(function () {
     if ($(this).prop("checked") == true) {

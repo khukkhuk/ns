@@ -21,6 +21,7 @@
     <link rel="stylesheet" type="text/css" href="backend/libs/datatables/datatables.min.css">
     <link rel="stylesheet" type="text/css" href="backend/libs/toastr/toastr.min.css">
 
+    <link rel="stylesheet" type="text/css" href="backend/libs/select2/select2.min.css">
     <link href="backend/css/custom.css" id="app-light" rel="stylesheet" type="text/css" />
     @if(@$css)
         @foreach($css as $css)
@@ -85,6 +86,8 @@
     <div class="rightbar-overlay"></div>
 
     <!-- JAVASCRIPT -->
+        
+
     <script src="backend/libs/jquery/jquery.min.js"></script>
     <script src="backend/libs/bootstrap/bootstrap.min.js"></script>
     <script src="backend/libs/metismenu/metismenu.min.js"></script>

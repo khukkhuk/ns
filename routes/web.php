@@ -42,13 +42,11 @@ Route::post('/ajax/get_employee', [Frontend\AjaxController::class,'get_employee'
 Route::get('/ajax/get_formdata', [Frontend\AjaxController::class,'get_formdata']);
 Route::post('/ajax/get_data_employee', [Frontend\AjaxController::class,'get_data_employee']);
 Route::get('/ajax/get_data_formdata', [Frontend\AjaxController::class,'get_data_formdata']);
+Route::get('/ajax/get_w_address/{id}', [Frontend\AjaxController::class,'get_w_address']);
 
 
 
-// Rout e::get('/test', [Webpanel\P DFController::class,'formPDF']);
-Route::get('/webpanel/view_pdf/{id}', [Webpanel\PDFController::class,'view_pdf']);
-Route::post('/webpanel/form', [Webpanel\PDFController::class,'pdf_index']);
-
+Route::get('/view/pdf/{id}', [Webpanel\PDFController::class,'view_bill']);
 Route::get('/view/{type}/{id}', [Webpanel\PDFController::class,'view']);
 Route::get('/form/{type}/{id}', [Webpanel\PDFController::class,'form']);
 Route::post('/form/{type}/{id}', [Webpanel\PDFController::class,'store']);
@@ -174,6 +172,15 @@ Route::group(['middleware' => ['Webpanel']], function () {
             Route::get('/', [Webpanel\PinkcardController::class,'index']);
             Route::get('/add', [Webpanel\PinkcardController::class,'add']);
             Route::post('/add', [Webpanel\PinkcardController::class,'insert']);
+
+            Route::get('/employer/{id}', [Webpanel\PinkcardController::class,'employer']);
+            Route::get('/employee/{id}', [Webpanel\PinkcardController::class,'employee']);
+            Route::get('/follower/{id}', [Webpanel\PinkcardController::class,'follower']);
+            Route::post('/employer/{id}', [Webpanel\PinkcardController::class,'update_employer']);
+            Route::post('/employee/{id}', [Webpanel\PinkcardController::class,'update_employee']);
+            Route::post('/follower/{id}', [Webpanel\PinkcardController::class,'store_follower']);
+            Route::post('/get_follower/{id}', [Webpanel\PinkcardController::class,'get_follower']);
+            
             Route::get('/edit/{id}', [Webpanel\PinkcardController::class,'edit']);
             Route::post('/edit/{id}', [Webpanel\PinkcardController::class,'update']);
             Route::get('/detail/{id}', [Webpanel\PinkcardController::class,'detail']);
@@ -233,6 +240,8 @@ Route::group(['middleware' => ['Webpanel']], function () {
             Route::get('/getdata/{id}', [Webpanel\BillController::class,'getdata']);
             Route::post('/datatable', [Webpanel\BillController::class,'datatable']);
             Route::get('/destroy', [Webpanel\BillController::class,'destroy']);
+            Route::get('/get_employee/{id}', [Webpanel\BillController::class,'get_employee']);
+            
         });
 
         Route::prefix('incomebill')->group(function(){
@@ -251,10 +260,6 @@ Route::group(['middleware' => ['Webpanel']], function () {
             Route::post('/add', [Webpanel\TypeController::class,'insert']);
             Route::get('/edit/{id}', [Webpanel\TypeController::class,'edit']);
             Route::post('/edit/{id}', [Webpanel\TypeController::class,'update']);
-            Route::get('/type_detail/{id}', [Webpanel\TypeController::class,'type_detail']);
-            Route::post('/datatable_type_detail', [Webpanel\TypeController::class,'datatable_type_detail']);
-            Route::post('/type_detail/{id}', [Webpanel\TypeController::class,'store_detail']);
-            Route::get('/getdata/{id}', [Webpanel\TypeController::class,'getdata']);
             Route::get('/destroy', [Webpanel\TypeController::class,'destroy']);
         });
         // === End Fixed Controller ===

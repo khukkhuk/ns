@@ -76,6 +76,8 @@ class EmployeeController extends Controller
                 'page' => 'add',
                 'id' => $request->id,
                 'rows' => Provinces::orderby('id','asc')->get(), 
+                'rowDs' => District::orderby('id','asc')->get(), 
+                'rowSDs' => SubDistrict::orderby('id','asc')->get(), 
             ]);
         }
     }
@@ -113,15 +115,20 @@ class EmployeeController extends Controller
                 $data->updated = date('Y-m-d H:i:s');
             }
             $data->prefix = $request->prefix;
-            $data->name = $request->name;
-            $data->surname = $request->surname;
+            $data->name_th = $request->name_th;
+            $data->surname_th = $request->surname_th;
+            $data->name_en = $request->name_en;
+            $data->surname_en = $request->surname_en;
             $data->gender = $request->gender;
             $data->b_date = $request->b_date;
             $data->age = $request->age;
             $data->b_place = $request->b_place;
             $data->tel_number = $request->tel_number;
+            $data->race = $request->race;
+            $data->nationality = $request->nationality;
             $data->couple_status = $request->couple_status;
             
+
             $data->business = $request->business;
             $data->position = $request->position;
             $data->workplace_type = $request->workplace_type;
@@ -131,6 +138,8 @@ class EmployeeController extends Controller
             $data->address_en = $request->address_en;
             $data->group_en = $request->group_en;
             $data->road_en = $request->road_en;
+            $data->alley_th = $request->alley_th;
+            $data->alley_en = $request->alley_en;
             
             
             $data->f_prefix = $request->f_prefix;
@@ -147,7 +156,7 @@ class EmployeeController extends Controller
             $data->passport_place = $request->passport_place;
             $data->passport_country = $request->passport_country;
             $data->passport_create = $request->passport_create;
-            $data->passport_expire = $request->m_surname;
+            $data->passport_expire = $request->passport_expire;
 
             $data->permit_number = $request->permit_number;
             $data->permit_create = $request->permit_create;
@@ -162,21 +171,8 @@ class EmployeeController extends Controller
             $data->employer_id = $request->id;
             $id = $data->employer_id;
             $filename = 'research_' . date('dmY-His');
-            $file = $request->image;
-            if ($file) 
-            {
-                $lg = Image::make($file->getRealPath());
-                $ext = explode("/", $lg->mime())[1];
-                $height = Image::make($file)->height();
-                $width = Image::make($file)->width();
-                $lg->resize($width, $height)->stream();
-                $newLG = 'uploads/research/' . $filename . '.' . $ext;
-                $store = Storage::disk('public')->put($newLG, $lg);
-                
-                if($store)
-                {
-                    $data->image = $newLG;
-                }
+            if($request->image!=null){
+                $file = $this->upload($request->image);
             }
             if($data->save()){
                 \DB::commit();
@@ -199,6 +195,11 @@ class EmployeeController extends Controller
     
     public function edit(Request $request,$id)
     {
+        $row = Employee::find($id);
+        $rowsP = Provinces::get();
+        $rowP = Provinces::find($row->province_id);
+        $rowD = District::find($row->district_id);
+        $rowSD = SubDistrict::find($row->subdistrict_id);
         return view("$this->prefix.pages.$this->folder.index",[
             'js' => [
                 ["type"=>"text/javascript","src"=>"backend/build/backend/employee.js"],
@@ -209,11 +210,30 @@ class EmployeeController extends Controller
             'segment' => $this->segment,
             'page' => 'edit',
             'id' => $id,
-            'rows' => Employee::find($id),
-            'rowsP' =>Provinces::orderby("id","asc")->get(),
+            'rows' => $row,
+            'rowsP' => $rowsP,
+            'rowP' => $rowP,
+            'rowD' => $rowD,
+            'rowSD' => $rowSD,
            
         ]);
         
     }
 
+    public static function upload($file)
+    {
+        if ($file) 
+        {
+            $filename = $file->getClientOriginalName();
+            $lg = Image::make($file->getRealPath());
+            // $ext = explode("/", $lg->mime())[1];
+            $height = Image::make($file)->height();
+            $width = Image::make($file)->width();
+            $lg->resize($width, $height)->stream();
+            $newLG = 'uploads/img/' . $filename;
+            // $newLG = 'uploads/img/' . $filename . '.' . $ext;
+            $store = Storage::disk('public')->put($newLG, $lg);
+            return $newLG;
+        }
+    }
 }

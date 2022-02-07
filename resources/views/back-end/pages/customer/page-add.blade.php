@@ -38,16 +38,16 @@
                                         </div> 
                                         <hr>   -->
 
-                                        <h4>ข้อมูลสถานประกอบการ</h4>
+                                        <h4>ข้อมูลนายจ้าง</h4>
                                             <a class="btn btn-danger" href="{{url("$segment/$folder")}}">ย้อนกลับ</a>
                                         <hr>
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="row">
                                                     <div class="form-group col-md-6">
-                                                        <input type="radio" checked name="type" id="type" value="person">
+                                                        <input type="radio" checked name="type" id="type1" value="บุคคล">
                                                         <label for="position">บุคคล</label>   
-                                                        <input type="radio" name="type" id="type" value="office"> 
+                                                        <input type="radio" name="type" id="type2" value="บริษัท"> 
                                                         <label for="position">บริษัท</label>   
                                                     </div>
                                                 </div>
@@ -82,7 +82,7 @@
                                             <div class="col-md-12">
                                                 <div class="row">
                                                 <div class="form-group col-md-2">
-                                                        <label for="position">คำนำหน้า</label>
+                                                        <label for="position">คำนำหน้า(TH)</label>
                                                         <select class="form-control" name="prefix_th" id="prefix_th">
                                                             <option value="นาย">นาย</option>
                                                             <option value="นาง">นาง</option>
@@ -245,16 +245,119 @@
                                                         <label for="position">เบอร์โทร</label>
                                                         <input class="form-control"name="tel_number"  id="tel_number" type="number">
                                                     </div>
-                                                    <div class="form-group col-md-3">
-                                                        <label for="position">E-mail</label>
-                                                        <input class="form-control"name="email"  id="email" type="email">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="row">
+                                            <h4>ที่อยู่สถานประกอบการ</h4>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="row">
+                                                <div class="form-group col-md-2">
+                                                        <label for="position">ที่อยู่(TH)</label>
+                                                        <input class="form-control"name="w_address_th"  id="w_address_th" type="text">
+                                                    </div>
+                                                    <div class="form-group col-md-2">
+                                                        <label for="position">หมู่(TH)</label>
+                                                        <input class="form-control"name="w_group"  id="w_group" type="text">
+                                                    </div>
+                                                    <div class="form-group col-md-2">
+                                                        <label for="position">ถนน(TH)</label>
+                                                        <input class="form-control"name="w_road_th"  id="w_road_th" type="text">
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group col-md-2">
+                                                        <label for="position">ซอย(TH)</label>
+                                                        <input class="form-control" type="text" id="w_alley_th" name="w_alley_th">
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                    
-                        
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="row">
+                                                    <div class="form-group col-md-2">
+                                                        <label>จังหวัด(TH)</label>
+                                                        <select name="w_province" id="w_province" class="form-control">
+                                                            <option value="">เลือกจังหวัด</option>
+                                                                @foreach(@$rows as $key => $row){
+                                                                    <option value="{{$row->id}}">{{$row->name_th}}</option>
+                                                                @endforeach
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group col-md-2">
+                                                        <label for="district">อำเภอ(TH)</label>
+                                                        <select name="w_district" id="w_district" class="form-control">
+                                                            <option value="">เลือกอำเภอ</option>
+                                                        </select>
+                                                        <!-- <div id="fetch_amphure"></div> -->
+                                                    </div>
+                                                    <div class="form-group col-md-2">
+                                                        <label for="subdistrict">ตำบล(TH)</label>
+                                                        <select name="w_subdistrict" id="w_subdistrict" class="form-control">
+                                                            <option value="">เลือกตำบล</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group col-md-2">
+                                                        <label for="position">รหัสไปรษณีย์(TH)</label>
+                                                        <input class="form-control" name="w_zipcode" id="w_zipcode" readonly type="text">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="row">
+                                                <div class="form-group col-md-2">
+                                                        <label for="position">ที่อยู่(EN)</label>
+                                                        <input class="form-control"name="w_address_en"  id="w_address_en" type="text">
+                                                    </div>
+                                                    <div class="form-group col-md-2">
+                                                        <label for="position">หมู่(EN)</label>
+                                                        <input class="form-control"name="w_group_en"  id="w_group_en" type="text">
+                                                    </div>
+                                                    <div class="form-group col-md-2">
+                                                        <label for="position">ถนน(EN)</label>
+                                                        <input class="form-control"name="w_road_en"  id="w_road_en" type="text">
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group col-md-2">
+                                                        <label for="position">ซอย(EN)</label>
+                                                        <input class="form-control" type="text" id="w_alley_en" name="w_alley_en">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="row">
+                                                    <div class="form-group col-md-2">
+                                                        <label>จังหวัด(EN)</label>
+                                                        <input class="form-control"  type="text" id="w_province_en" name="w_province_en" readonly>
+                                                    </div>
+                                                    <div class="form-group col-md-2">
+                                                        <label for="district">อำเภอ(EN)</label>
+                                                        <input class="form-control"  type="text" id="w_district_en" name="w_district_en" readonly>
+                                                        <!-- <div id="fetch_amphure"></div> -->
+                                                    </div>
+                                                    <div class="form-group col-md-2">
+                                                        <label for="subdistrict">ตำบล(EN)</label>
+                                                        <input class="form-control"  type="text" id="w_subdistrict_en" name="w_subdistrict_en" readonly>
+                                                    </div>
+                                                    <div class="form-group col-md-2">
+                                                        <label for="position">รหัสไปรษณีย์(EN)</label>
+                                                        <input class="form-control" name="w_zipcode_en" id="w_zipcode_en" readonly type="text">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
                                         <hr>
+
                                         <div class="form-group">
                                             <button class="btn btn-primary" type="submit" name="signup" value="Create">บันทึกข้อมูล</button>
                                             <a class="btn btn-danger" href="{{url("$segment/$folder")}}">ยกเลิก</a>
@@ -269,7 +372,7 @@
             </div>
         </div> <!-- end col -->
     </div> <!-- end row -->
+
     <script type="text/javascript">
-        
     </script>
 </div>

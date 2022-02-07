@@ -47,14 +47,14 @@
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-flex align-items-center justify-content-between">
-                <h4 class="mb-0 font-size-18">สร้างข้อมูลเมนู</h4>
+                <h4 class="mb-0 font-size-18">แก้ไขข้อมูลผู้ติดตามaa</h4>
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="{{ url("$segment") }}">หน้าแรก</a></li>
-                        <li class="breadcrumb-item"><a href="{{ url("$segment/customer")}}">รายการลูกจ้าง</a></li>
-                        <li class="breadcrumb-item"><a href="{{ url("$segment/$folder/index/$id")}}">รายการลูกค้า</a></li>
-                        <li class="breadcrumb-item active">เพิ่มข้อมูลลูกจ้าง </li>
+                        <li class="breadcrumb-item"><a href="{{ url("$segment/customer")}}">ข้อมูลลูกค้า</a></li>
+                        <li class="breadcrumb-item"><a href="{{ url("$segment/$folder/index/$id")}}">ข้อมูลแรงงาน</a></li>
+                        <li class="breadcrumb-item active">แก้ไขข้อมูลผู้ติดตาม </li>
                     </ol>
                 </div>
 
@@ -73,56 +73,67 @@
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-body">
-
-                                    <form id="menuForm" method="POST" action="">
-
+                                     <form id="menuForm" method="POST" action="" enctype='multipart/form-data'>
                                         @csrf
-                                        <!-- <div class="form-group">
-                                            <button class="btn btn-primary" type="submit" name="signup" value="Create">บันทึกข้อมูล</button>
-                                            <a class="btn btn-danger" href="{{url("$segment/$folder")}}">ยกเลิก</a>
-                                        </div> 
-                                        <hr>   -->
-
-                                        @php $prefix = $rows->prefix;  @endphp
-                                        <h4>ข้อมูลผู้ติดตาม</h4>
-                                        <hr>
-                                        <div class="row">
-                                            <div class="col-md-12">
+                                            <div class="row">
+                                             <div class="col-md-6">
+                                                @php $prefix = $rows->prefix;  @endphp
+                                                <h4>ข้อมูลผู้ติดตาม</h4><hr>
                                                 <div class="row">
-                                                    <div class="form-group col-md-2">
-                                                        <label for="position">คำนำหน้า</label>
-                                                        <select class="form-control" name="prefix" id="prefix">
-                                                            <option value="" hidden>กรุณาเลือก</option>
-                                                            <option @if($prefix == "นาย")selected @endif value="นาย">นาย</option>
-                                                            <option @if($prefix == "นาง")selected @endif value="นาง">นาง</option>
-                                                            <option @if($prefix == "นางสาว")selected @endif value="นางสาว">นางสาว</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="form-group col-md-2">
-                                                        <label for="position">ชื่อ</label>
-                                                        <input class="form-control" value="{{$rows->name}}" name="name" id="name" type="text">
-                                                    </div>
-                                                    <div class="form-group col-md-2">
-                                                        <label for="position">นามสกุล</label>
-                                                        <input class="form-control" value="{{$rows->surname}}" name="surname" id="surname" type="text">
+                                                    <div class="col-md-12">
+                                                        <div class="row">
+                                                            <div class="form-group col-md-4">
+                                                                <label for="position">คำนำหน้า</label>
+                                                                <select class="form-control" name="prefix" id="prefix">
+                                                                    <option value="" hidden>กรุณาเลือก</option>
+                                                                    <option @if($prefix == "นาย")selected @endif value="นาย">นาย</option>
+                                                                    <option @if($prefix == "นาง")selected @endif value="นาง">นาง</option>
+                                                                    <option @if($prefix == "นางสาว")selected @endif value="นางสาว">นางสาว</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="form-group col-md-4">
+                                                                <label for="position">ชื่อ</label>
+                                                                <input class="form-control" value="{{$rows->name}}" name="name" id="name" type="text">
+                                                            </div>
+                                                            <div class="form-group col-md-4">
+                                                                <label for="position">นามสกุล</label>
+                                                                <input class="form-control" value="{{$rows->surname}}" name="surname" id="surname" type="text">
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </div>
 
-                                        <div class="col-12 col-xs-12 col-md-12 col-xl-12">
-                                            <div class="row">
-                                                <div class="form-group col-md-12">
-                                                    <h6>ไฟล์รูปภาพประกอบกรณีมีให้ผู้ประเมินรับชม</h6>
-                                                    <img src="@if(@$rows->image){{$rows->image}}@endif" class="img-thumbnail" id="preview" style="width:100%">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="row">
+                                                            <div class="form-group col-md-3">
+                                                                <label for="position">วันเดือนปีเกิด</label>
+                                                                <input class="form-control" value="{{$rows->b_date}}" name="b_date" id="b_date" type="date">
+                                                            </div>
+                                                            <div class="form-group col-md-3">
+                                                                <label for="position">อายุ</label>
+                                                                <input class="form-control" value="{{$rows->age}}" name="age" id="age" type="number">
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="row">
-                                                <div class="form-group col-12 col-xs-12 col-md-12 col-xl-12">
-                                                    <small class="help-block">*รองรับไฟล์ <strong class="text-danger">(jpg, jpeg, png)</strong> เท่านั้น</small>
-                                                    <div class="custom-file">
-                                                        <input type="file" class="custom-file-input" onchange="loadFile(event)" name="image" id="image" accept="image/*" />
-                                                        <label class="custom-file-label" for="image">Choose file</label>
+                                            <div class="col-6">
+                                                <div class="col-12 col-xs-12 col-md-12 col-xl-12">
+                                                    <div class="row">
+                                                        <div class="form-group col-md-12">
+                                                            <h6></h6>
+                                                            <img src="@if(@$rows->image){{$rows->image}} @else noimage.jpg @endif" class="img-thumbnail" id="preview" style="width:100%">
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="form-group col-12 col-xs-12 col-md-12 col-xl-12">
+                                                            <small class="help-block">*รองรับไฟล์ <strong class="text-danger">(jpg, jpeg, png)</strong> เท่านั้น</small>
+                                                            <div class="custom-file">
+                                                                <input type="file" class="custom-file-input" onchange="loadFile(event)" name="image" id="image" accept="image/*" />
+                                                                <label class="custom-file-label" for="image">Choose file</label>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>

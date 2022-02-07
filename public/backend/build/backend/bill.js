@@ -32,50 +32,37 @@ $(function () {
         },
         columns: [
             {data: 'DT_RowIndex',    title :'#',    className: 'text-center w10'}, // 0
-            {data: 'bill_number',    title :'เลขบิล',    className: 'text-center w30'}, // 1
             {data: 'bill_date',    title :'วันที่ออกบิล',    className: 'text-center w30'}, //2
+            // {data: 'company',    title :'บริษัท',    className: 'text-center w30'}, //3
             {data: 'name',    title :'ชื่อ',    className: 'text-center w30'}, //3
             {data: 'tel_number',    title :'เบอร์โทร',    className: 'text-center w30'}, //3
-            {data: 'type',    title :'ประเภท',    className: 'text-center w30'}, //4
             {data: 'notes',    title :'หมายเหตุ',    className: 'text-center w30'}, //5 //5
             {data: 'id',    title :'',    className: 'text-center w30'}, //5 //5
         ],
         rowCallback: function (nRow, aData, dataIndex) {
             // console.log(aData);
-            $('td:eq(1)', nRow).html(''
-            + aData['bill_number']
-            ).addClass('input');
-
-            $('td:eq(2)', nRow).html(''
-            + aData['bill_date'], 
-            ).addClass('input');
-
-            $('td:eq(3)', nRow).html(''
-            + aData['name'], 
-            ).addClass('input');
-
-            $('td:eq(4)', nRow).html(''
-            + aData['tel_number'], 
-            ).addClass('input');
-
             $('td:eq(5)', nRow).html(''
-            + aData['type'], 
-            ).addClass('input');
-
-            $('td:eq(6)', nRow).html(''
-            + aData['notes'], 
-            ).addClass('input');
-
-            $('td:eq(7)', nRow).html(''
-            +'<button class="btn btn-sm btn-success">ดูรายละเอียดข้อมูล</button>'
+            +'<a class="btn btn-sm btn-success" href="view/pdf/'+aData['id']+'">ดูรายละเอียดข้อมูล</a>'
             )
         }
     });
     $('.myWhere,.myLike,.myCustom,#onlyTrashed').keyup('change', function(e){
         oTable.draw();
     });
+    $('.selecttype').select2()
+    $('#selectemployer').select2()
 });
-
+$("#selectemployer").change(function(){
+    $.ajax({
+        type:'GET',
+        url: fullUrl+'/get_employee/'+$(this).val(),
+        success: function(res){
+            console.log(res)
+            $("#employee_data").val(res)
+            $("#employee1").html(res)
+        }
+    })
+})
 function status(ids){
     const $this = $(this), id = ids;
     $.ajax({ type: 'get', url: fullUrl + '/status/' + id, success: function (res) { if (res == false) { $(this).prop('checked', false) } } });
@@ -117,13 +104,21 @@ function addbill(){
     num = parseInt($("#maxline").val());
     $("#maxline").val(num+1);
     num = parseInt($("#maxline").val());
+    // alert($("#data_select2").val())
     data =   '<tr><td><input class="form-control amount" type="number" id="amount'+num+'" name="amount'+num+'"></td>'
             +'<td><input type="text" hidden value="" id="type'+num+' name="type'+num+'">'
             +'<input type="text" hidden value="" id="type_name'+num+'" name="type_name'+num+'">'
-            +'<select class="form-control selecttype" id="select_type'+num+'" name="select_type'+num+'">'+$("#select_type1").html()+'</select></td>'
-            +'<td><input class="form-control" type="text" id="cost'+num+'" name="cost'+num+'"></td>'
+
+            +'<select name="select_type'+num+'" id="select_type'+num+'" class="selecttype form-control" hidden>'+$("#data_select2").val()+'</select></td>'
+            
+            +'<td><select name="employee'+num+'" class="selecttype" id="employee'+num+'"></select></td>'
+            +'<td><input class="form-control" type="text" id="price'+num+'"></td>'
             +'<td><input class="form-control" type="text" id="total_per'+num+'" name="total_per'+num+'"></td></tr>';
+
     $(data).appendTo($("#table-row"));
+    $("#employee"+num).html($("#employee_data").val())
+    $("#employee"+num).select2()
+    $("#select_type"+num).select2()
 }
 
 $(document).on('change','.selecttype',function(){
@@ -132,9 +127,9 @@ $(document).on('change','.selecttype',function(){
     $.ajax({ type: 'get',
         url: "webpanel/bill/getdata/"+id,
         success: function (res){
-            $("#cost"+sort).val(res['cost']);
+            $("#price"+sort).val(res['price']);
             if($("#amount"+sort).val()>0){
-                cal_cost(sort);
+                cal_price(sort);
                 settotal();
                 console.log(">")
             }
@@ -189,24 +184,22 @@ function get_chart(income , pay ,type){
         }
     });
 }
-
-
 $(document).on('keyup', '.amount', function(){
     sort = $(this).attr("id").substr(6,10);
     if($("#select_type"+sort).val()>0){
-        cal_cost(sort);
+        cal_price(sort);
         settotal();
     }
 });
 $(document).on('change', '.amount', function(){
     sort = $(this).attr("id").substr(6,10);
     if($("#select_type"+sort).val()>0){
-        cal_cost(sort);
+        cal_price(sort);
         settotal();
     }
 });
-function cal_cost(sort){
-    $("#total_per"+sort).val(parseInt($("#amount"+sort).val()) * parseInt($("#cost"+sort).val()));
+function cal_price(sort){
+    $("#total_per"+sort).val(parseInt($("#amount"+sort).val()) * parseInt($("#price"+sort).val()));
 }
 function settotal(){
     total=0;
